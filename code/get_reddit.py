@@ -1,16 +1,11 @@
 import os
-
+import csv
 from dotenv import load_dotenv
 import praw
+import pandas as pd
 import datetime
 
 load_dotenv()
-
-client_id=os.environ["CLIENT_ID"]
-client_secret=os.environ["CLIENT_SECRET"]
-user_agent=os.environ["USER_AGENT"]
-password=os.environ["PASSWORD"]
-username=os.environ["USERNAME"]
 
 reddit = praw.Reddit(
     client_id=os.environ["CLIENT_ID"],
@@ -38,7 +33,6 @@ def scrape_posts(n):
     output = []
     for post in top_posts:
         output.append([post.id, post.title, post.url, post.score, post.num_comments, datetime.datetime.fromtimestamp(post.created)])
-
     return output
 
 
@@ -60,3 +54,12 @@ def scrape_comments(input):
             else:
                 output.append([row[0], row[1], comment.replace('\n', ' '), top_level_comment.ups])
     return output
+
+
+
+def write_data_to_csv(input, file_name, headers):
+    """Write the data to the csv file."""
+    with open(file_name, "w+", newline="", encoding="utf-8") as out_file:
+        write = csv.writer(out_file)
+        write.writerow(headers)
+        write.writerows(input)
