@@ -41,7 +41,7 @@ def scrape_comments(input):
     """
     Scrapes the comments from each post.
     Returns a list of lists for top-level comments that includes:
-    [post_id, post_title, comment, # upvotes]
+    [post_id, post_title, comment, # upvotes, # downvotes]
     """
     output = []
     for row in input:
@@ -52,14 +52,22 @@ def scrape_comments(input):
             if "I am a bot" in comment:
                 pass
             else:
-                output.append([row[0], row[1], comment.replace('\n', ' '), top_level_comment.ups])
+                output.append([row[0], row[1], comment.replace('\n', ' '), top_level_comment.ups, top_level_comment.downs])
     return output
 
 
 
 def write_data_to_csv(input, file_name, headers):
     """Write the data to the csv file."""
-    with open(file_name, "w+", newline="", encoding="utf-8") as out_file:
+    path = os.path.join("artifacts", file_name)
+    with open(path, "w+", newline="", encoding="utf-8") as out_file:
         write = csv.writer(out_file)
         write.writerow(headers)
         write.writerows(input)
+
+
+post = scrape_posts(20)
+comments = scrape_comments(post)
+
+write_data_to_csv(post, "reddit_posts_results.csv", ["id","title","url","score","num_comments","datetime_created"])
+write_data_to_csv(comments, "reddit_comments_results.csv", ["id","title","comment","upvotes","downvotes"])
