@@ -17,9 +17,17 @@
   3. Natural Language Processing: We used the nltk (Vader) and spaCy packages on python to analyze sentiments and entities in the posts and the comments scraped from both platforms. Vader assigns a positive, a neutral, and a negative sentiment value to each comment that sums to 1. We created a framework in order to rate the comments on an ordinal 1-5 scale where 1 - Very Negative, 2 - Negative, 3 - Neutral, 4- Positive, and 5 - Very Positive based off the raw sentiment scores provided by Vader.  
   
 <h3> Reproducing Code </h3> 
-  1. aa
+  1. Database for Reddit: Set up a database instance on Google Cloud Platform (GCP) and create a databases for Reddit. Connect your database to a SQL editor of your choice and ************************. 
   
-  2. aa
+  2. Scrape Reddit: Run code/scrape_reddit.py and then upload the outputs (reddit_post_results.csv and reddit_comment_results.csv) onto the database. 
+  
+  3. Database for Twitter:
+  
+  4. Scrape Twitter:
+  
+  5. NLP Analysis: Run
+  
+  6. Streamlit: 
   
   
 <h3> Results </h3> 
@@ -32,4 +40,6 @@
   
   
 <h3> Conclusion </h3> 
-  Overall there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. About half the comments are neutral in their language and the rest are equal parts split between negative and positive. About a quarter of the total comments could be classified as very negative or very positive but this does not lean in one direction. There is an overall balance in conversation 
+  Overall there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. About half the comments are neutral in their language and the rest are equal parts split between negative and positive. About a quarter of the total comments could be classified as very negative or very positive but this does not lean in one direction. The conversations seem to be balanced overall and there is no clear bias. 
+  There is a lot of scope for future updates to this project. 
+  
