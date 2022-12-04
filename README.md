@@ -10,9 +10,17 @@
   
  <h3> Methodology </h3> 
   1.Scraping Reddit: We started by scraping the top 50 posts on the r/politics subreddit over the last month (November 2022), and the associated top 50 comments for each of the posts. The data scraped included the main post and its score (upvotes), the url to the news article being discussed, the number of comments, and the top 50 comments and their scores (upvotes). The output is saved as a csv in the /uploads/ folder. 
-  2. Scraping Twitter: We used the url for the news articles from Reddit to search related posts on Twitter. We used Tweepy to scrape tweets and their replies along with the number of likes for both. 
-  3. Natural Language Processing: We used the nltk and spacy packages on python to analyze sentiments and entities in the posts and the comments scraped from both platforms. 
   
- <h3> Sources of Data </h3> 
- 
- Sources of data include faculty in some of the top 25 graduate Economics departments across the United States. The rankings for the highest ranked departments were obtained from [U.S. News](usnews.com). Only full-time faculty were considered: lecturers, professors of instruction, visiting professors, and professors’ emeriti were excluded. Some of these professors could be teaching and conducting research actively but we have excluded them for simplicity and consiste
+  2. Scraping Twitter: We used the url for the news articles from Reddit to search related posts on Twitter. We used Tweepy to scrape tweets and their replies along with the number of likes for both. 
+  
+  3. Natural Language Processing: We used the nltk (Vader) and spaCy packages on python to analyze sentiments and entities in the posts and the comments scraped from both platforms. Vader assigns a positive, a neutral, and a negative sentiment value to each comment that sums to 1. We created a framework in order to rate the comments on an ordinal 1-5 scale where 1 - Very Negative, 2 - Negative, 3 - Neutral, 4- Positive, and 5 - Very Positive based off the raw sentiment scores provided by Vader.  
+  
+
+
+<h3> Results </h3> 
+
+<h3> Limitations </h3> it
+  Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, aconyms, and even emojis. Vader's rating system uses a dictionary based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
+  
+  
+<h3> Conclusion </h3> 
