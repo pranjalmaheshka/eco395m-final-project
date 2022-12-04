@@ -8,13 +8,13 @@ reddit_comments = pd.read_csv("reddit_comment_results.csv")
 posts = """
 select * from reddit_posts rp 
 """
-posts_df = 
+posts_df = pd.read_sql_query(posts, engine)
 
 """Querying reddit comments from SQL"""
 comments = """
 select * from reddit_comments rc 
 """
-comments_df = 
+comments_df = pd.read_sql_query(comments, engine)
 
 
 reddit_comments['score_neg'] = 0
