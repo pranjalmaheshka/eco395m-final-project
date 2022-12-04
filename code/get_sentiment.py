@@ -4,6 +4,19 @@ sia = SentimentIntensityAnalyzer()
 
 reddit_comments = pd.read_csv("reddit_comment_results.csv")
 
+"""Querying reddit posts from SQL"""
+posts = """
+select * from reddit_posts rp 
+"""
+posts_df = 
+
+"""Querying reddit comments from SQL"""
+comments = """
+select * from reddit_comments rc 
+"""
+comments_df = 
+
+
 reddit_comments['score_neg'] = 0
 reddit_comments['score_neu'] = 0
 reddit_comments['score_pos'] = 0
