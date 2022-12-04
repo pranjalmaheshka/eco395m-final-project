@@ -9,7 +9,9 @@
  This project analyzes bias and polarity in political discussions on Reddit and Twitter. The goal is to identify if there discussions on these websites lean in one direction or the other in terms of the sentiment and language used. For example, does Reddit usually more negative comments than Twitter for the same political conversation? Is there a prevalence for certain political viewpoints on either website?
   
  <h3> Methodology </h3> 
-  1. We started by scraping the top 50 posts on the r/politics subreddit over the last month (November 2022), and the associated top 50 comments for each of the posts. The data scraped included the main post and its score (upvotes), the url to the news article being discussed, the number of comments, and the top 50 comments and their scores (upvotes). 
+  1.Scraping Reddit: We started by scraping the top 50 posts on the r/politics subreddit over the last month (November 2022), and the associated top 50 comments for each of the posts. The data scraped included the main post and its score (upvotes), the url to the news article being discussed, the number of comments, and the top 50 comments and their scores (upvotes). The output is saved as a csv in the /uploads/ folder. 
+  2. Scraping Twitter: We used the url for the news articles from Reddit to search related posts on Twitter. We used Tweepy to scrape tweets and their replies along with the number of likes for both. 
+  3. Natural Language Processing: We used the nltk and spacy packages on python to analyze sentiments and entities in the posts and the comments scraped from both platforms. 
   
  <h3> Sources of Data </h3> 
  
