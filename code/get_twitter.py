@@ -111,6 +111,21 @@ def twitter_scraper(sql_data):
         output.to_sql("twitter_comments", con=engine, if_exists="append", index=False)
     return output
 
+def nlp_columns():
+    query_template = """
+    ALTER TABLE twitter_comments
+    add people varchar,
+    add organization varchar,
+    add score_neg numeric,
+    add score_neu numeric,
+    add score_pos numeric,
+    add score_compound numeric,
+    add score numeric;
+    """
+
+    with engine.connect() as connection:
+        connection.exec_driver_sql(query_template)
+
 
 if __name__ == "__main__":
     myquery = """
@@ -119,3 +134,4 @@ if __name__ == "__main__":
     df = pd.read_sql_query(myquery, engine)
     output = twitter_scraper(df)
     output.to_sql("twitter_comments", con=engine, if_exists="append", index=False)
+    #nlp_columns()

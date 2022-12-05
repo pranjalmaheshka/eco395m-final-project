@@ -170,11 +170,7 @@ def write_data_to_csv(input, file_name, headers):
         write.writerows(input)
 
 
-# post = scrape_posts(20)
-# comments = scrape_comments(post)
 
-# write_data_to_csv(post, "reddit_posts_results.csv", ["id","title","url","score","num_comments","datetime_created"])
-# write_data_to_csv(comments, "reddit_comments_results.csv", ["id","title","comment","upvotes"])
 
 
 def create_table():
@@ -249,6 +245,8 @@ def nlp_columns():
     ALTER TABLE reddit_comments
     add people varchar,
     add organization varchar,
+    add score_neg numeric,
+    add score_neu numeric,
     add score_pos numeric,
     add score_compound numeric,
     add score numeric;
@@ -260,6 +258,11 @@ def nlp_columns():
 
 
 if __name__ == "__main__":
+    # post = scrape_posts(20)
+    # comments = scrape_comments(post)
+
+    # write_data_to_csv(post, "reddit_posts_results.csv", ["id","title","url","score","num_comments","datetime_created"])
+    # write_data_to_csv(comments, "reddit_comments_results.csv", ["id","title","comment","upvotes"])
     reddit_posts_dicts = scrape_posts_dict(50)
     reddit_comments_dicts = scrape_comments_dicts(reddit_posts_dicts)
     create_table()
