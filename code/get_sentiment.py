@@ -3,22 +3,18 @@ import pandas as pd
 from nltk.sentiment import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 
-import matplotlib
 import time
 start = time.time()
 
-#reddit_comments = pd.read_csv("reddit_comment_results.csv")
-
 """Querying reddit posts from SQL"""
 posts = """
-select * from reddit_posts rp limit 100
+select * from reddit_posts rp 
 """
 posts_df = pd.read_sql_query(posts, engine)
-#print(posts_df)
 
 """Querying reddit comments from SQL"""
 comments = """
-select * from reddit_comments rc limit 100
+select * from reddit_comments rc
 """
 reddit_comments = pd.read_sql_query(comments, engine)
 
@@ -50,18 +46,17 @@ for ind in reddit_comments.index:
     else:
         reddit_comments.at[ind,'score'] = 100
 
-upvotes_series = reddit_comments.groupby(['score'])['upvotes'].sum()
+sentiments = pd.Series(["","Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
 sentiments_df = reddit_comments.groupby(['score'])['score'].count()
-sentiments = ["Very Negative", "Negative", "Neutral", "Positive", "Very Positive"]
-print(upvotes_series)
-print(sentiments_df)
-#print(type(sentiments_df))
-
+upvotes_series = reddit_comments.groupby(['score'])['upvotes'].sum()
 votes_by_sentiment = upvotes_series/sentiments_df
+
 results = pd.concat([sentiments, upvotes_series, sentiments_df,votes_by_sentiment], axis=1)
 results.columns =["Sentiment", "Sentiment Count", "Total Upvotes", "Avg Upvotes"]
+results = results.iloc[1: , :]
+results.index.name=None
+results = results.astype({"Avg Upvotes": int})
 print(results)
-print(results.hist)
 
 end = time.time()
 ttime = end - start
