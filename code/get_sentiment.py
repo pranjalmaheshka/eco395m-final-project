@@ -58,8 +58,7 @@ results.index.name=None
 results = results.astype({"Avg Upvotes": int})
 print(results)
 
-end = time.time()
-ttime = end - start
+ttime =  time.time() - start
 print("Runtime is " + str(ttime))
 
 reddit_comments.to_csv("reddit_comments_pranjal.csv")
