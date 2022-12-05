@@ -4,3 +4,4 @@ praw==7.6.1
 SQLAlchemy==1.4.34
 psycopg2-binary==2.9.3
 nltk
+snscrape
