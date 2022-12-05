@@ -244,6 +244,20 @@ def get_reddit_post_results():
         print(columns)
         print(raw_data)
 
+def nlp_columns():
+    query_template = """
+    ALTER TABLE reddit_comments
+    add people varchar,
+    add organization varchar,
+    add score_pos numeric,
+    add score_compound numeric,
+    add score numeric;
+    """
+
+    with engine.connect() as connection:
+        connection.exec_driver_sql(query_template)
+
+
 
 if __name__ == "__main__":
     reddit_posts_dicts = scrape_posts_dict(50)
@@ -251,4 +265,5 @@ if __name__ == "__main__":
     create_table()
     insert_many_dict_posts(reddit_posts_dicts)
     insert_many_dict_comments(reddit_comments_dicts)
+    nlp_columns()
     # get_reddit_post_results()
