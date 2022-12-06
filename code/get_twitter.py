@@ -8,7 +8,13 @@ import snscrape.modules.twitter as sntwitter
 load_dotenv()
 
 
-def twitter_scraper(sql_data):
+def twitter_scraper(sql_data): 
+    """
+    Scrapes the top 5 posts on Twitter using the headline/title from the Reddit's top posts
+    Returns a list of list includes:
+    [Date, Username, Description, Verified Account, Content, URL, Id, Reply Count, Retweet Account, Likes Counts]
+
+    """
     df = sql_data
     for index, row in df.iterrows():
         data = []
@@ -42,6 +48,12 @@ def twitter_scraper(sql_data):
             )
         print("headline search done")
 
+        """
+        Scrapes the Top 5 posts using the URL from Reddit's top posts
+        Returns a list of list includes:
+        [Date, Username, Description, Verification, Content, URL, Id, ReplyCount, RetweetCount, LikesCount]
+
+        """
         for i, tweet in enumerate(
             sntwitter.TwitterSearchScraper(row["url"], top=True).get_items()
         ):
@@ -69,6 +81,12 @@ def twitter_scraper(sql_data):
             )
         print("url search done")
 
+        """
+        Scrapes the replies for top 5 posts from Twitter using Headline and URL
+        Returns a list of list includes:
+        [Date, Username, Description, Verification, Content, URL, Id, ReplyCount, RetweetsCount, LikesCount]
+
+        """
         for id in id_list:
             id_list2 = []
             mode = sntwitter.TwitterTweetScraperMode
