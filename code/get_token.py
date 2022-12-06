@@ -27,6 +27,6 @@ items = [x.text for x in tokens.ents]
 
 c = Counter(items).most_common(50)
 
-df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
+#df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
 
-print('Length of tokens', len(df), df) 
+print('Length of tokens', len(c), c) 
