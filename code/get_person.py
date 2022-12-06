@@ -39,19 +39,19 @@ df['people'] = df['people'].astype(str)
 print(len(df['people']), df)
 
 
-with engine.connect() as connection:
-  df.to_sql('temp_red_comm_entity', con=connection, if_exists='replace',index=False)
+# with engine.connect() as connection:
+#   df.to_sql('temp_red_comm_entity', con=connection, if_exists='replace',index=False)
 
 
-reddit_comment_sql = """
-    UPDATE reddit_comments AS f
-    SET people = t.people
-    FROM temp_red_comm_entity AS t
-    WHERE f.reddit_post_id = t.reddit_post_id
-"""
+# reddit_comment_sql = """
+#     UPDATE reddit_comments AS f
+#     SET people = t.people
+#     FROM temp_red_comm_entity AS t
+#     WHERE f.reddit_post_id = t.reddit_post_id
+# """
 
-with engine.begin() as conn:     # TRANSACTION
-    conn.execute(reddit_comment_sql)
+# with engine.begin() as conn:     # TRANSACTION
+#     conn.execute(reddit_comment_sql)
 
 '''Entity recognition for Reddit posts'''
 
