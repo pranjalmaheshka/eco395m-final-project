@@ -10,44 +10,74 @@ load_dotenv()
 
 def twitter_scraper(sql_data):
     df = sql_data
-    data = []
-    id_list = []
     for index, row in df.iterrows():
-        print(row["title"])
+        data = []
+        id_list = []
+        string = row["title"][:250].replace("“","").replace("”","")
+        print(string)
         for i, tweet in enumerate(
-            sntwitter.TwitterSearchScraper(row["title"][:250], top=True).get_items()
+            sntwitter.TwitterSearchScraper(string, top=True).get_items()
         ):
             if i > 4:
                 break
-            else:
-                id_list.append(tweet.id)
-                data.append(
-                    [
-                        row["reddit_post_id"],
-                        row["title"],
-                        row["url"],
-                        tweet.date,
-                        tweet.user.username,
-                        tweet.user.description,
-                        tweet.user.verified,
-                        tweet.content,
-                        tweet.url,
-                        tweet.id,
-                        tweet.replyCount,
-                        tweet.retweetCount,
-                        tweet.likeCount,
-                    ]
-                )
+            if tweet.id in id_list:
+                continue
+            id_list.append(tweet.id)
+            data.append(
+                [
+                    row["reddit_post_id"],
+                    row["title"],
+                    row["url"],
+                    tweet.date,
+                    tweet.user.username,
+                    tweet.user.description,
+                    tweet.user.verified,
+                    tweet.content,
+                    tweet.url,
+                    tweet.id,
+                    tweet.replyCount,
+                    tweet.retweetCount,
+                    tweet.likeCount,
+                ]
+            )
         print("headline search done")
+
         for i, tweet in enumerate(
             sntwitter.TwitterSearchScraper(row["url"], top=True).get_items()
         ):
             if i > 4:
                 break
-            elif tweet.id in id_list:
-                pass
-            else:
-                id_list.append(tweet.id)
+            if tweet.id in id_list:
+                continue
+            id_list.append(tweet.id)
+            data.append(
+                [
+                    row["reddit_post_id"],
+                    row["title"],
+                    row["url"],
+                    tweet.date,
+                    tweet.user.username,
+                    tweet.user.description,
+                    tweet.user.verified,
+                    tweet.content,
+                    tweet.url,
+                    tweet.id,
+                    tweet.replyCount,
+                    tweet.retweetCount,
+                    tweet.likeCount,
+                ]
+            )
+        print("url search done")
+
+        for id in id_list:
+            id_list2 = []
+            mode = sntwitter.TwitterTweetScraperMode
+            sncraper_reply = sntwitter.TwitterTweetScraper(tweetId=id, mode=mode.SCROLL)
+            replies = sncraper_reply.get_items()
+            for tweet in replies:
+                if tweet.id in id_list or tweet.id in id_list2:
+                    continue
+                id_list2.append(tweet.id)
                 data.append(
                     [
                         row["reddit_post_id"],
@@ -65,33 +95,8 @@ def twitter_scraper(sql_data):
                         tweet.likeCount,
                     ]
                 )
-        print("url search done")
-        for id in id_list:
-            mode = sntwitter.TwitterTweetScraperMode
-            sncraper_reply = sntwitter.TwitterTweetScraper(tweetId=id, mode=mode.SCROLL)
-            replies = sncraper_reply.get_items()
-            for tweet in replies:
-                if tweet.id in id_list:
-                    pass
-                else:
-                    data.append(
-                        [
-                            row["reddit_post_id"],
-                            row["title"],
-                            row["url"],
-                            tweet.date,
-                            tweet.user.username,
-                            tweet.user.description,
-                            tweet.user.verified,
-                            tweet.content,
-                            tweet.url,
-                            tweet.id,
-                            tweet.replyCount,
-                            tweet.retweetCount,
-                            tweet.likeCount,
-                        ]
-                    )
         print("replies search done")
+
         headers = [
             "reddit_post_id",
             "title",
@@ -109,7 +114,8 @@ def twitter_scraper(sql_data):
         ]
         output = pd.DataFrame(data, columns=headers)
         output.to_sql("twitter_comments", con=engine, if_exists="append", index=False)
-    return output
+    print("completed")
+
 
 def nlp_columns():
     query_template = """
@@ -129,9 +135,8 @@ def nlp_columns():
 
 if __name__ == "__main__":
     myquery = """
-	SELECT reddit_post_id, title, url FROM reddit_posts;
+	SELECT reddit_post_id, title, url FROM reddit_posts OFFSET 45;
 	"""
     df = pd.read_sql_query(myquery, engine)
-    output = twitter_scraper(df)
-    output.to_sql("twitter_comments", con=engine, if_exists="append", index=False)
+    twitter_scraper(df)
     #nlp_columns()
