@@ -12,7 +12,7 @@ def get_site_sentiment(site):
     if site == "Reddit":
         """Querying reddit comments from SQL"""
         query = """
-        select * from reddit_comments rc limit 500
+        select * from reddit_comments rc
         """
         likes = "upvotes"
         text = "comment"
@@ -20,7 +20,7 @@ def get_site_sentiment(site):
     elif site == "Twitter":
         """Querying Twitter comments from SQL"""
         query = """
-        select * from twitter_comments tc limit 500
+        select * from twitter_comments tc
         """
         likes = "likes"
         text = "tweet"

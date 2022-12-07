@@ -15,7 +15,7 @@ select
 from
     reddit_comments rc
 group by
-    rc.reddit_post_id, rc.comment, rc.id limit 5
+    rc.reddit_post_id, rc.comment, rc.id
 """
 
 red_df = pd.read_sql_query(reddit_comments, engine)
@@ -46,7 +46,7 @@ select
 from
     twitter_comments tc
 group by
-    tc.reddit_post_id, tc.tweet, tc.id limit 5
+    tc.reddit_post_id, tc.tweet, tc.id
 """
 
 tweet_df = pd.read_sql_query(twitter_comments, engine)
@@ -76,7 +76,7 @@ select
 from
     twitter_comments tc
 group by
-    tc.reddit_post_id, tc.user_desc, tc.id  limit 100
+    tc.reddit_post_id, tc.user_desc, tc.id
 """
 
 
