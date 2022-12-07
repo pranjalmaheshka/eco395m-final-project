@@ -111,6 +111,9 @@ def get_sentiment():
     
     post_comparison = reddit_post_results.merge(twitter_post_results, on='Post ID', how='left')
     post_comparison["Diff"] = post_comparison["Twitter Score"] - post_comparison["Reddit Score"]
+    # with engine.connect() as connection:
+        #post_comparison.to_sql('post_comparison', con=connection, if_exists='replace',index=False)
+
     
     ################################################################################
     ## Ignore this part for now 
