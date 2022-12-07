@@ -1,67 +1,97 @@
-<<<<<<< HEAD
 from database import engine 
 from collections import Counter
-from collections import defaultdict
 import pandas as pd
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
-nlp.max_length = 5000000
-text = """
+nlp.max_length = 100000000
+
+'''Cleaning Reddit data'''
+reddit_comments = """
 select 
-	reddit_post_id, 
-	comment
+    reddit_post_id, 
+    comment
 from 
-	reddit_comments rc
+    reddit_comments rc
 group by 
-	rc.reddit_post_id, rc.comment 
+    rc.reddit_post_id, rc.comment limit 5
 """
 
-df = pd.read_sql_query(text, engine)
-#print(df)
+red_df = pd.read_sql_query(reddit_comments, engine)
 
-df['comment'] = df['comment'].astype(str)
+red_df['comment'] = red_df['comment'].astype(str)
 
-tokens = nlp(''.join(str(df.comment.tolist())))
+red_df['tokenized'] = red_df['comment'].apply(lambda x: nlp(x))
 
-items = [x.text for x in tokens.ents]
+red_df['lemmatized'] = red_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
 
-c = Counter(items).most_common(50)
+red_tokens = nlp(''.join(str(red_df.lemmatized.tolist())))
 
-df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
+red_items = [x.text for x in red_tokens.ents]
 
-print('Length of tokens', len(df), df) 
-=======
-from database import engine 
-from collections import Counter
-from collections import defaultdict
-import pandas as pd
-import spacy
+red = Counter(red_items).most_common(50)
 
-nlp = spacy.load("en_core_web_sm")
-nlp.max_length = 5000000
-text = """
+red_tokens_df = pd.DataFrame.from_records(red, columns=['Token','Count'])
+
+print('Length of Reddit tokens', len(red_tokens_df), red_tokens_df) 
+
+
+'''Cleaning Twitter data'''
+twitter_comments = """
 select 
-	reddit_post_id, 
-	comment
+    reddit_post_id, 
+    tweet
 from 
-	reddit_comments rc
+    twitter_comments tc
 group by 
-	rc.reddit_post_id, rc.comment 
+    tc.reddit_post_id, tc.tweet limit 5
 """
 
-df = pd.read_sql_query(text, engine)
-#print(df)
+tweet_df = pd.read_sql_query(twitter_comments, engine)
 
-df['comment'] = df['comment'].astype(str)
+tweet_df['tweet'] = tweet_df['tweet'].astype(str)
 
-tokens = nlp(''.join(str(df.comment.tolist())))
+tweet_df['tokenized'] = tweet_df['tweet'].apply(lambda x: nlp(x))
 
-items = [x.text for x in tokens.ents]
+tweet_df['lemmatized'] = tweet_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
 
-c = Counter(items).most_common(50)
+twitter_tokens = nlp(''.join(str(tweet_df.lemmatized.tolist())))
 
-#df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
+twitter_items = [x.text for x in twitter_tokens.ents]
 
-print('Length of tokens', len(c), c) 
->>>>>>> 51dfd4c5ebde4f4c1d43a66973474edbc13bd412
+twit = Counter(twitter_items).most_common(50)
+
+twit_tokens_df = pd.DataFrame.from_records(twit, columns=['Token','Count'])
+
+print('Length of Twitter tokens', len(twit_tokens_df), twit_tokens_df) 
+
+
+'''Cleaning Twitter descriptions'''
+twitter_desc = """
+select 
+    reddit_post_id, 
+    user_desc 
+from 
+    twitter_comments tc
+group by 
+    tc.reddit_post_id, tc.user_desc  limit 100
+"""
+
+
+desc_df = pd.read_sql_query(twitter_desc, engine)
+
+desc_df['user_desc'] = desc_df['user_desc'].astype(str)
+
+desc_df['tokenized'] = desc_df['user_desc'].apply(lambda x: nlp(x))
+
+desc_df['lemmatized'] = desc_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
+
+desc_tokens = nlp(''.join(str(desc_df.lemmatized.tolist())))
+
+twitter_desc_items = [x.text for x in desc_tokens.ents]
+
+desc = Counter(twitter_desc_items).most_common(50)
+
+desc_tokens_df = pd.DataFrame.from_records(desc, columns=['Token','Count'])
+
+print('Length of Twitter tokens', len(desc_tokens_df), desc_tokens_df) 
