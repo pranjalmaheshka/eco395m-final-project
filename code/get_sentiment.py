@@ -1,6 +1,8 @@
 from database import engine
 import pandas as pd
 from nltk.sentiment import SentimentIntensityAnalyzer
+import nltk
+nltk.download(["vader_lexicon"])
 sia = SentimentIntensityAnalyzer()
 
 import time
