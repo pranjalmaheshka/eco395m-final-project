@@ -6,6 +6,8 @@ from get_person import reddit_org
 from get_person import twitter_person
 from get_person import twitter_norp
 from get_person import twitter_org
+from get_person import user_norp
+from get_person import user_org
 import pandas as pd
 import spacy
 
@@ -54,4 +56,13 @@ twitter_df_org = pd.DataFrame(twitter_org_counts, columns =['text', 'count'])
 
 print('Length of twitter_df_org', len(twitter_df_org), twitter_df_org)
 
+'''Analysis: Twitter description'''
+user_org_counts = Counter(user_org).most_common(20)
+user_df_org = pd.DataFrame(user_org_counts, columns =['text', 'count'])
 
+print('Length of user_df_org', len(user_df_org), user_df_org)
+
+user_norp_counts = Counter(user_norp).most_common(20)
+user_df_norp = pd.DataFrame(user_norp_counts, columns =['text', 'count'])
+
+print('Length of user_df_norp', len(user_df_norp), user_df_norp)
