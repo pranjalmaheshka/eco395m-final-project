@@ -138,6 +138,7 @@ def twitter_scrape_comments(sql_data):
 def nlp_columns():
     query_template = """
     ALTER TABLE twitter_comments
+    add id bigserial
     add people varchar,
     add organization varchar,
     add NORP varchar,
