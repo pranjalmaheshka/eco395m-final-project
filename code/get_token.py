@@ -6,27 +6,55 @@ import spacy
 
 nlp = spacy.load("en_core_web_sm")
 nlp.max_length = 5000000
-text = """
+
+'''Entity recognition for Reddit comments'''
+reddit_comments = """
 select 
-	reddit_post_id, 
-	comment
+    reddit_post_id, 
+    comment
 from 
-	reddit_comments rc
+    reddit_comments rc
 group by 
-	rc.reddit_post_id, rc.comment 
+    rc.reddit_post_id, rc.comment limit 50 
 """
 
-df = pd.read_sql_query(text, engine)
-#print(df)
+red_df = pd.read_sql_query(reddit_comments, engine)
 
-df['comment'] = df['comment'].astype(str)
+red_df['comment'] = red_df['comment'].astype(str)
 
-tokens = nlp(''.join(str(df.comment.tolist())))
+red_tokens = nlp(''.join(str(red_df.comment.tolist())))
 
-items = [x.text for x in tokens.ents]
+red_items = [x.text for x in red_tokens.ents]
 
-c = Counter(items).most_common(50)
+red = Counter(red_items).most_common(50)
 
-df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
+#df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
 
-print('Length of tokens', len(df), df) 
+print('Length of Reddit tokens', len(red), red) 
+
+
+'''Entity recognition for Twitter comments'''
+twitter_comments = """
+select 
+    reddit_post_id, 
+    tweet
+from 
+    twitter_comments tc
+group by 
+    tc.reddit_post_id, tc.tweet limit 50
+"""
+
+tweet_df = pd.read_sql_query(twitter_comments, engine)
+
+tweet_df['tweet'] = tweet_df['tweet'].astype(str)
+
+twitter_tokens = nlp(''.join(str(tweet_df.tweet.tolist())))
+
+twitter_items = [x.text for x in twitter_tokens.ents]
+
+twit = Counter(twitter_items).most_common(50)
+
+#df = pd.DataFrame.from_records(c.most_common(), columns=['Token','Count'])
+
+print('Length of Twitter tokens', len(twit), twit) 
+
