@@ -4,6 +4,8 @@ from get_token import red_tokens
 from get_token import red_df
 from get_token import twitter_tokens
 from get_token import tweet_df
+from get_token import desc_tokens
+from get_token import desc_df
 import pandas as pd
 import spacy
 
@@ -109,3 +111,40 @@ print(len(tweet_df['NORP']), tweet_df)
 
 # with engine.begin() as conn:     # TRANSACTION
 #     conn.execute(twitter_comment_sql)
+
+'''Entity recognition for Twitter users''' 
+
+user_org = []
+for ent in desc_tokens.ents:
+    if ent.label_ == 'ORG':
+        user_org.append(ent.text)
+    if len(user_org) == 0: 
+        continue
+
+desc_df['user_organization'] = pd.Series(user_org)
+desc_df['user_organization'] = desc_df['user_organization'].astype(str)
+print(len(desc_df['user_organization']), desc_df)
+
+user_norp = []
+for ent in desc_tokens.ents:
+    if ent.label_ == 'NORP':
+        user_norp.append(ent.text)
+    if len(user_norp) == 0: 
+        continue
+
+desc_df['user_NORP'] = pd.Series(user_norp)
+desc_df['user_NORP'] = desc_df['user_NORP'].astype(str)
+print(len(desc_df['user_NORP']), desc_df)
+
+# with engine.connect() as connection:
+#   desc_df.to_sql('twitter_user', con=connection, if_exists='replace',index=False)
+
+# user_desc_sql = """
+#     UPDATE twitter_comments AS f
+#     SET user_organization = t.user_organization, user_NORP = t.user_NORP
+#     FROM twitter_user AS t
+#     WHERE f.reddit_post_id = t.reddit_post_id
+# """
+
+# with engine.begin() as conn:     # TRANSACTION
+#     conn.execute(user_desc_sql)
