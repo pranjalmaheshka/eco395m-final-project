@@ -60,8 +60,7 @@ def get_site_sentiment(site):
 
     if site=="Reddit":
         print(comments)
-        with engine.connect() as connection:
-            comments.to_sql('temp_red_comm_sentiment', con=connection, if_exists='replace',index=False)
+        comments.to_sql('temp_red_comm_sentiment', con=engine, if_exists='replace',index=False)
 
         reddit_sentiment_sql = """
             UPDATE reddit_comments AS f
@@ -74,8 +73,7 @@ def get_site_sentiment(site):
 
     if site=="Twitter":
         print(comments)
-        with engine.connect() as connection:
-            comments.to_sql('temp_twit_comm_sentiment', con=connection, if_exists='replace',index=False)
+        comments.to_sql('temp_twit_comm_sentiment', con=engine, if_exists='replace',index=False)
 
         twitter_sentiment_sql = """
             UPDATE twitter_comments AS f
@@ -112,8 +110,8 @@ def get_sentiment():
 
     post_comparison = reddit_post_results.merge(twitter_post_results, on='Post ID', how='left')
     post_comparison["Diff"] = post_comparison["Twitter Score"] - post_comparison["Reddit Score"]
-    # with engine.connect() as connection:
-        #post_comparison.to_sql('post_comparison', con=connection, if_exists='replace',index=False)
+    post_comparison.to_sql('post_comparison', con=engine, if_exists='replace',index=False)
+
 
 
     ################################################################################

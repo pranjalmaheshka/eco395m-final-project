@@ -1,4 +1,4 @@
-from database import engine 
+from database import engine
 from collections import Counter
 from get_token import red_tokens
 from get_token import red_df
@@ -48,11 +48,11 @@ red_df['NORP'] = pd.Series(reddit_norp)
 red_df['NORP'] = red_df['NORP'].astype(str)
 print(len(red_df['NORP']), red_df)
 
-# with engine.connect() as connection:
-#   red_df.to_sql('temp_red_comm_entity', con=connection, if_exists='replace',index=False)
+
+red_df.to_sql('temp_red_comm_entity', con=engine, if_exists='replace',index=False)
 
 
-# reddit_comment_sql = """
+#reddit_comment_sql = """
 #     UPDATE reddit_comments AS f
 #     SET people = t.people, organization = t.organization, NORP = t.NORP
 #     FROM temp_red_comm_entity AS t
@@ -60,16 +60,16 @@ print(len(red_df['NORP']), red_df)
 # """
 
 # with engine.begin() as conn:     # TRANSACTION
-#     conn.execute(reddit_comment_sql)
+#     conn.exec_driver_sql(reddit_comment_sql)
 
 
-'''Entity recognition for Tweets''' 
+'''Entity recognition for Tweets'''
 
 twitter_person = []
 for ent in twitter_tokens.ents:
     if ent.label_ == 'PERSON':
         twitter_person.append(ent.text)
-    if len(twitter_person) == 0: 
+    if len(twitter_person) == 0:
         continue
 
 tweet_df['people'] = pd.Series(twitter_person)
@@ -80,7 +80,7 @@ twitter_org = []
 for ent in twitter_tokens.ents:
     if ent.label_ == 'ORG':
         twitter_org.append(ent.text)
-    if len(twitter_org) == 0: 
+    if len(twitter_org) == 0:
         continue
 
 tweet_df['organization'] = pd.Series(twitter_org)
@@ -91,7 +91,7 @@ twitter_norp = []
 for ent in twitter_tokens.ents:
     if ent.label_ == 'NORP':
         twitter_norp.append(ent.text)
-    if len(twitter_norp) == 0: 
+    if len(twitter_norp) == 0:
         continue
 
 tweet_df['NORP'] = pd.Series(twitter_norp)
@@ -99,8 +99,7 @@ tweet_df['NORP'] = tweet_df['NORP'].astype(str)
 print(len(tweet_df['NORP']), tweet_df)
 
 
-# with engine.connect() as connection:
-#   tweet_df.to_sql('temp_twit_comm_entity', con=connection, if_exists='replace',index=False)
+#   tweet_df.to_sql('temp_twit_comm_entity', con=engine, if_exists='replace',index=False)
 
 # twitter_comment_sql = """
 #     UPDATE twitter_comments AS f
@@ -110,15 +109,15 @@ print(len(tweet_df['NORP']), tweet_df)
 # """
 
 # with engine.begin() as conn:     # TRANSACTION
-#     conn.execute(twitter_comment_sql)
+#     connection.exec_driver_sql(twitter_comment_sql)
 
-'''Entity recognition for Twitter users''' 
+'''Entity recognition for Twitter users'''
 
 user_org = []
 for ent in desc_tokens.ents:
     if ent.label_ == 'ORG':
         user_org.append(ent.text)
-    if len(user_org) == 0: 
+    if len(user_org) == 0:
         continue
 
 desc_df['user_organization'] = pd.Series(user_org)
@@ -129,15 +128,15 @@ user_norp = []
 for ent in desc_tokens.ents:
     if ent.label_ == 'NORP':
         user_norp.append(ent.text)
-    if len(user_norp) == 0: 
+    if len(user_norp) == 0:
         continue
 
 desc_df['user_NORP'] = pd.Series(user_norp)
 desc_df['user_NORP'] = desc_df['user_NORP'].astype(str)
 print(len(desc_df['user_NORP']), desc_df)
 
-# with engine.connect() as connection:
-#   desc_df.to_sql('twitter_user', con=connection, if_exists='replace',index=False)
+
+#   desc_df.to_sql('twitter_user', con=engine, if_exists='replace',index=False)
 
 # user_desc_sql = """
 #     UPDATE twitter_comments AS f
@@ -147,4 +146,4 @@ print(len(desc_df['user_NORP']), desc_df)
 # """
 
 # with engine.begin() as conn:     # TRANSACTION
-#     conn.execute(user_desc_sql)
+#     conn.exec_driver_sql(user_desc_sql)
