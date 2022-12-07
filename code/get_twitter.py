@@ -8,7 +8,7 @@ import snscrape.modules.twitter as sntwitter
 load_dotenv()
 
 
-def twitter_scraper(sql_data): 
+def twitter_scrape_comments(sql_data):
     """
     Scrapes the top 5 posts on Twitter using the headline/title from the Reddit's top posts
     Returns a list of list includes:
@@ -151,10 +151,10 @@ def nlp_columns():
         connection.exec_driver_sql(query_template)
 
 
-if __name__ == "__main__":
+def twitter_scraper():
     myquery = """
-	SELECT reddit_post_id, title, url FROM reddit_posts OFFSET 45;
+	SELECT reddit_post_id, title, url FROM reddit_posts;
 	"""
     df = pd.read_sql_query(myquery, engine)
-    twitter_scraper(df)
-    #nlp_columns()
+    twitter_scrape_comments(df)
+    nlp_columns()
