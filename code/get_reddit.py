@@ -17,6 +17,7 @@ reddit = praw.Reddit(
     username=os.environ["USERNAME"]
 )
 
+
 ### RUN THE PRINT STATEMENT BELOW TO OBTAIN AUTHORIZATION URL
 ### returns a URL. paste into browser and click "accept" to gain access
 # print(reddit.auth.url(scopes=["identity"], state="...", duration="permanent"))
@@ -24,28 +25,6 @@ reddit = praw.Reddit(
 ### IF ACCESS IS GRANTED SUCCESSFULLY, THE FOLLOWING PRINT STATEMENTS RETURNS REFRESH TOKEN
 # print(reddit.auth.authorize(code))
 # print(reddit.user.me())
-
-
-def scrape_posts(n):
-    """
-    Scrapes the top n number of monthly posts from the politics subreddit page.
-    Returns a list of lists that includes:
-    [post_id, title, url, # upvotes, # comments, datetime object of posting]
-    """
-    top_posts = reddit.subreddit("Politics").top(time_filter="month", limit=n)
-    output = []
-    for post in top_posts:
-        output.append(
-            [
-                post.id,
-                post.title,
-                post.url,
-                post.score,
-                post.num_comments,
-                datetime.datetime.fromtimestamp(post.created),
-            ]
-        )
-    return output
 
 
 def scrape_posts_dict(n):
@@ -109,31 +88,6 @@ def scrape_posts_dict(n):
     return output
 
 
-def scrape_comments(input):
-    """
-    Scrapes the comments from each post.
-    Returns a list of lists for top-level comments that includes:
-    [post_id, post_title, comment, # upvotes, ]
-    """
-    output = []
-    for row in input:
-        submission = reddit.submission(id=row[0])
-        submission.comments.replace_more(limit=0)
-        for top_level_comment in submission.comments.list():
-            comment = top_level_comment.body
-            if "I am a bot" in comment:
-                pass
-            else:
-                output.append(
-                    [
-                        row[0],
-                        row[1],
-                        comment.replace("\n", " "),
-                        top_level_comment.ups
-                    ]
-                )
-    return output
-
 
 def scrape_comments_dicts(input):
     """
@@ -161,14 +115,15 @@ def scrape_comments_dicts(input):
     return output
 
 
-def write_data_to_csv(input, file_name, headers):
+
+def write_dicts_to_csv(input, file_name):
     """Write the data to the csv file."""
     path = os.path.join("artifacts", file_name)
+    keys = input[0].keys()
     with open(path, "w+", newline="", encoding="utf-8") as out_file:
-        write = csv.writer(out_file)
-        write.writerow(headers)
-        write.writerows(input)
-
+        dict_writer = csv.DictWriter(out_file, keys)
+        dict_writer.writeheader()
+        dict_writer.writerows(input)
 
 
 
@@ -176,7 +131,8 @@ def write_data_to_csv(input, file_name, headers):
 def create_table():
     create_table_cmd = """
         create table if not exists reddit_posts (
-            reddit_post_id varchar primary key,
+            rank bigserial,
+            reddit_post_id varchar,
             title varchar,
             url varchar,
             post_score numeric,
@@ -227,19 +183,6 @@ def insert_many_dict_comments(data):
         connection.exec_driver_sql(insert_template, data)
 
 
-def get_reddit_post_results():
-    query_template = """
-        select * from reddit_posts;
-        select * from reddit_comments
-    """
-    with engine.connect() as connection:
-        result = connection.exec_driver_sql(query_template)
-
-        columns = result.keys()
-        raw_data = result.all()
-        print(columns)
-        print(raw_data)
-
 def nlp_columns():
     query_template = """
     ALTER TABLE reddit_comments
@@ -255,18 +198,22 @@ def nlp_columns():
     with engine.connect() as connection:
         connection.exec_driver_sql(query_template)
 
-
-
-if __name__ == "__main__":
-    # post = scrape_posts(20)
-    # comments = scrape_comments(post)
-
-    # write_data_to_csv(post, "reddit_posts_results.csv", ["id","title","url","score","num_comments","datetime_created"])
-    # write_data_to_csv(comments, "reddit_comments_results.csv", ["id","title","comment","upvotes"])
-    reddit_posts_dicts = scrape_posts_dict(50)
+def scrape_reddit(n):
+    """
+    Scrape "n" number of top posts on the reddit/politics subreddit
+    """
+    reddit_posts_dicts = scrape_posts_dict(n)
     reddit_comments_dicts = scrape_comments_dicts(reddit_posts_dicts)
     create_table()
     insert_many_dict_posts(reddit_posts_dicts)
     insert_many_dict_comments(reddit_comments_dicts)
     nlp_columns()
-    # get_reddit_post_results()
+
+
+
+
+if __name__ == "__main__":
+    posts = scrape_posts_dict(10)
+    comments = scrape_comments_dicts(posts)
+    write_dicts_to_csv(posts, "reddit_posts_results.csv")
+    write_dicts_to_csv(comments, "reddit_comments_results.csv")
