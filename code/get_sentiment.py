@@ -82,18 +82,24 @@ def get_sentiment():
     post_comparison = reddit_post_results.merge(twitter_post_results, on='Post ID', how='left')
     post_comparison["Diff"] = post_comparison["Twitter Score"] - post_comparison["Reddit Score"]
     
-    test1 = (post_comparison["Diff"] < 0).sum()
-    test2 = (post_comparison["Diff"] < 0)
+    ################################################################################
+    ## Ignore this part for now 
+    test_neg = (post_comparison["Diff"] < 0).count()
+    test_pos = (post_comparison["Diff"] > 0).count()
+
+    print(test_neg)
+    print(test_pos)
+
     diff_neg = post_comparison["Diff"][(post_comparison['Diff']>0)].mean(numeric_only=True,skipna=True)
     diff_pos = post_comparison[(post_comparison["Diff"]<0)].mean(numeric_only=True,skipna=True)
     diff_data = [["Reddit Positive", diff_neg], ["Twitter Positive", diff_pos]]
-    
-    #diff_results = pd.DataFrame(["Mean Neg Diff", "Mean Pos Diff"], [diff_neg, diff_pos])
-    
     diff_df = pd.DataFrame(diff_data, columns=["Mean Diff","Value"])
-    print(diff_neg)
-    print(type(diff_neg))
-    print(diff_df)
+    
+    #print("Mean difference in scores when Reddit is more positive is " + str(diff_neg))
+    #print("Mean difference in scores when Twitter is more positive is " + str(diff_pos))
+    ###############################################################################
+
+    # send shit to database reddit_results twitter_results + new table for post_comparison
     return 
 
 if __name__ == "__main__":
