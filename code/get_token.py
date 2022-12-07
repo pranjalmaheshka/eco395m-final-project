@@ -1,4 +1,4 @@
-from database import engine 
+from database import engine
 from collections import Counter
 import pandas as pd
 import spacy
@@ -8,13 +8,14 @@ nlp.max_length = 100000000
 
 '''Cleaning Reddit data'''
 reddit_comments = """
-select 
-    reddit_post_id, 
+select
+    id,
+    reddit_post_id,
     comment
-from 
+from
     reddit_comments rc
-group by 
-    rc.reddit_post_id, rc.comment limit 5
+group by
+    rc.reddit_post_id, rc.comment, rc.id limit 5
 """
 
 red_df = pd.read_sql_query(reddit_comments, engine)
@@ -33,18 +34,19 @@ red = Counter(red_items).most_common(50)
 
 red_tokens_df = pd.DataFrame.from_records(red, columns=['Token','Count'])
 
-print('Length of Reddit tokens', len(red_tokens_df), red_tokens_df) 
+print('Length of Reddit tokens', len(red_tokens_df), red_tokens_df)
 
 
 '''Cleaning Twitter data'''
 twitter_comments = """
-select 
-    reddit_post_id, 
+select
+    id,
+    reddit_post_id,
     tweet
-from 
+from
     twitter_comments tc
-group by 
-    tc.reddit_post_id, tc.tweet limit 5
+group by
+    tc.reddit_post_id, tc.tweet, tc.id limit 5
 """
 
 tweet_df = pd.read_sql_query(twitter_comments, engine)
@@ -63,18 +65,18 @@ twit = Counter(twitter_items).most_common(50)
 
 twit_tokens_df = pd.DataFrame.from_records(twit, columns=['Token','Count'])
 
-print('Length of Twitter tokens', len(twit_tokens_df), twit_tokens_df) 
+print('Length of Twitter tokens', len(twit_tokens_df), twit_tokens_df)
 
 
 '''Cleaning Twitter descriptions'''
 twitter_desc = """
-select 
-    reddit_post_id, 
-    user_desc 
-from 
+select
+    id, reddit_post_id,
+    user_desc
+from
     twitter_comments tc
-group by 
-    tc.reddit_post_id, tc.user_desc  limit 100
+group by
+    tc.reddit_post_id, tc.user_desc, tc.id  limit 100
 """
 
 
@@ -94,4 +96,4 @@ desc = Counter(twitter_desc_items).most_common(50)
 
 desc_tokens_df = pd.DataFrame.from_records(desc, columns=['Token','Count'])
 
-print('Length of Twitter tokens', len(desc_tokens_df), desc_tokens_df) 
+print('Length of Twitter tokens', len(desc_tokens_df), desc_tokens_df)
