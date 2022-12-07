@@ -49,7 +49,7 @@ red_df['NORP'] = red_df['NORP'].astype(str)
 print(len(red_df['NORP']), red_df)
 
 red_df['tokenized'] = red_df['tokenized'].astype(str)
-red_df['lemmatized'] = red_df['lemmatized'].astype(str)
+#red_df['lemmatized'] = red_df['lemmatized'].astype(str)
 
 red_df.to_sql('temp_red_comm_entity', con=engine, if_exists='replace',index=False)
 
@@ -101,7 +101,7 @@ tweet_df['NORP'] = tweet_df['NORP'].astype(str)
 print(len(tweet_df['NORP']), tweet_df)
 
 tweet_df['tokenized'] = red_df['tokenized'].astype(str)
-tweet_df['lemmatized'] = red_df['lemmatized'].astype(str)
+#tweet_df['lemmatized'] = red_df['lemmatized'].astype(str)
 
 tweet_df.to_sql('temp_twit_comm_entity', con=engine, if_exists='replace',index=False)
 
@@ -140,7 +140,7 @@ desc_df['user_NORP'] = desc_df['user_NORP'].astype(str)
 print(len(desc_df['user_NORP']), desc_df)
 
 desc_df['tokenized'] = red_df['tokenized'].astype(str)
-desc_df['lemmatized'] = red_df['lemmatized'].astype(str)
+#desc_df['lemmatized'] = red_df['lemmatized'].astype(str)
 desc_df.to_sql('twitter_user', con=engine, if_exists='replace',index=False)
 
 user_desc_sql = """

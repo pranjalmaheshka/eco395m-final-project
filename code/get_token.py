@@ -24,9 +24,9 @@ red_df['comment'] = red_df['comment'].astype(str)
 
 red_df['tokenized'] = red_df['comment'].apply(lambda x: nlp(x))
 
-red_df['lemmatized'] = red_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
+#red_df['lemmatized'] = red_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
 
-red_tokens = nlp(''.join(str(red_df.lemmatized.tolist())))
+red_tokens = nlp(''.join(str(red_df.tokenized.tolist())))
 
 red_items = [x.text for x in red_tokens.ents]
 
@@ -55,9 +55,9 @@ tweet_df['tweet'] = tweet_df['tweet'].astype(str)
 
 tweet_df['tokenized'] = tweet_df['tweet'].apply(lambda x: nlp(x))
 
-tweet_df['lemmatized'] = tweet_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
+#tweet_df['lemmatized'] = tweet_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
 
-twitter_tokens = nlp(''.join(str(tweet_df.lemmatized.tolist())))
+twitter_tokens = nlp(''.join(str(tweet_df.tokenized.tolist())))
 
 twitter_items = [x.text for x in twitter_tokens.ents]
 
@@ -86,9 +86,9 @@ desc_df['user_desc'] = desc_df['user_desc'].astype(str)
 
 desc_df['tokenized'] = desc_df['user_desc'].apply(lambda x: nlp(x))
 
-desc_df['lemmatized'] = desc_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
+#desc_df['lemmatized'] = desc_df['tokenized'].apply(lambda x: [y.lemma_ for y in nlp(x)])
 
-desc_tokens = nlp(''.join(str(desc_df.lemmatized.tolist())))
+desc_tokens = nlp(''.join(str(desc_df.tokenized.tolist())))
 
 twitter_desc_items = [x.text for x in desc_tokens.ents]
 
