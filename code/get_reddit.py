@@ -131,7 +131,8 @@ def write_dicts_to_csv(input, file_name):
 def create_table():
     create_table_cmd = """
         create table if not exists reddit_posts (
-            reddit_post_id varchar primary key,
+            rank bigserial,
+            reddit_post_id varchar,
             title varchar,
             url varchar,
             post_score numeric,
