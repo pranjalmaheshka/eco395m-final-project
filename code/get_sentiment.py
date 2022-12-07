@@ -56,7 +56,7 @@ def get_site_sentiment(site):
                     comments.at[ind,'score'] = 4
         else:
             comments.at[ind,'score'] = 3
-        comments = comments.astype({"score_neg": float, "score_pos": float, "score_compound": float, "score":float})
+        comments = comments.astype({"score_neg": float, "score_neu": float, "score_pos": float, "score_compound": float, "score":float})
 
     if site=="Reddit":
         print(comments)
@@ -65,7 +65,7 @@ def get_site_sentiment(site):
 
         reddit_sentiment_sql = """
             UPDATE reddit_comments AS f
-            SET score_neg = t.score_neg, score_pos = t.score_pos, score_compound = t.score_compound, score = t.score
+            SET score_neg = t.score_neg, score_neu = t.score_neu, score_pos = t.score_pos, score_compound = t.score_compound, score = t.score
             FROM temp_red_comm_sentiment AS t
             WHERE t.id = f.id
             """
@@ -79,12 +79,12 @@ def get_site_sentiment(site):
 
         twitter_sentiment_sql = """
             UPDATE twitter_comments AS f
-            SET score_neg = t.score_neg, score_pos = t.score_pos, score_compound = t.score_compound, score = t.score
+            SET score_neg = t.score_neg, score_neu = t.score_neu, score_pos = t.score_pos, score_compound = t.score_compound, score = t.score
             FROM temp_twit_comm_sentiment AS t
             WHERE t.id = f.id
             """
-        with engine.begin() as conn:     # TRANSACTION
-            conn.execute(twitter_sentiment_sql)
+        with engine.connect() as connection:
+            connection.exec_driver_sql(twitter_sentiment_sql)
 
     # Site level analysis
     sentiments = pd.Series(["","Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
