@@ -35,7 +35,7 @@ def get_site_sentiment(site):
         comments.at[ind,'score_neu'] = score["neu"]
         comments.at[ind,'score_pos'] = score["pos"]
         comments.at[ind,'score_compound'] = score["compound"]
-        comments["scaled_score"] = (comments["score_compound"] + 1)/2
+        comments["score_compound"] = (comments["score_compound"] + 1)/2
 
         # Creating new scoring system: 1 = very neg, 2 = neg, 3 = neu, 4 = pos, 5 = very pos 
         if score["neg"] >= 0.5:
