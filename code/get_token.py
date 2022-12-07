@@ -64,6 +64,3 @@ twit = Counter(twitter_items).most_common(50)
 twit_tokens_df = pd.DataFrame.from_records(twit, columns=['Token','Count'])
 
 print('Length of Twitter tokens', len(twit_tokens_df), twit_tokens_df) 
-
-
-

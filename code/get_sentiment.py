@@ -1,69 +1,111 @@
-from database import engine 
-from collections import defaultdict
+from database import engine
 import pandas as pd
-import spacy
+from nltk.sentiment import SentimentIntensityAnalyzer
+sia = SentimentIntensityAnalyzer()
 
-nlp = spacy.load("en_core_web_sm")
+import time
+start = time.time()
 
-text = """
-select 
-	reddit_post_id, 
-	comment
-from 
-	reddit_comments rc
-group by 
-	rc.reddit_post_id, rc.comment 
-"""
+def get_site_sentiment(site):
+    if site == "Reddit":
+        """Querying reddit comments from SQL"""
+        query = """
+        select * from reddit_comments rc limit 500 
+        """
+        likes = "upvotes"
+        text = "comment"
+        rtitle = "Reddit Score"
+    elif site == "Twitter":
+        """Querying Twitter comments from SQL"""
+        query = """
+        select * from twitter_comments tc limit 500
+        """
+        likes = "likes"
+        text = "tweet"
+        rtitle = "Twitter Score"
+    
+    comments = pd.read_sql_query(query, engine)
 
-df = pd.read_sql_query(text, engine)
-#print(df)
+    # Vader: 1 is neg, 2 is neu, 3 is pos 
+    for ind in comments.index:
+        score = sia.polarity_scores(comments.loc[ind][text])
+        comments.at[ind,'score_neg'] = score["neg"]
+        comments.at[ind,'score_neu'] = score["neu"]
+        comments.at[ind,'score_pos'] = score["pos"]
+        comments.at[ind,'score_compound'] = score["compound"]
+        comments["scaled_score"] = (comments["score_compound"] + 1)/2
 
-df['comment'] = df['comment'].astype(str)
+        # Creating new scoring system: 1 = very neg, 2 = neg, 3 = neu, 4 = pos, 5 = very pos 
+        if score["neg"] >= 0.5:
+            comments.at[ind,'score'] = 1
+        elif score["pos"] >= 0.5:
+            comments.at[ind,'score'] = 5
+        elif abs(score["neg"]-score["pos"]) > 0.20:      
+            if score["neg"] > score["pos"]:
+                comments.at[ind,'score'] = 1
+            else:
+                comments.at[ind,'score'] = 5
+        elif abs(score["neg"]-score["pos"]) <= 0.10:
+                comments.at[ind,'score'] = 3
+        elif abs(score["neg"]-score["pos"]) <= 0.20:
+                if score["neg"] > score["pos"]:
+                    comments.at[ind,'score'] = 2
+                else:
+                    comments.at[ind,'score'] = 4
+        else:
+            comments.at[ind,'score'] = 3
 
-sample = df.sort_values(by=['comment']).head(5)
-#print(sample)
+    # Site level analysis 
+    sentiments = pd.Series(["","Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
+    sentiments_count = comments.groupby(['score'])['score'].count()
+    sentiments_pct = sentiments_count/len(sentiments_count)
+    upvotes_count = comments.groupby(['score'])[likes].sum()
+    upvotes_pct = upvotes_count*100/sum(upvotes_count)
+    votes_by_sentiment = upvotes_count/sentiments_count
 
-article = [_ for _ in sample['comment']]
-print(article)
-#print(type(article))
+    site_results = pd.concat([sentiments, sentiments_count, sentiments_pct, upvotes_pct, votes_by_sentiment], axis=1)
+    site_results.columns =["Sentiment", "Sentiment Count", "Sentiment Pct", "Upvotes Pct", "Upvotes Avg"]
+    site_results = site_results.iloc[1: , :]
+    site_results.index.name=None
+    site_results = site_results.astype({"Upvotes Avg": int})
 
-for a in article:
- 	doc = nlp(a)
-#print(a)
-#print(a)
+    # Site level comparison 
+    post_sentiment = comments.groupby(["reddit_post_id"])["scaled_score"].mean().reset_index()
+    post_sentiment.columns =["Post ID", rtitle]
 
-# entities_by_article = []
-# dic = defaultdict(list)
+    return site_results, post_sentiment 
 
-# for a in article:
-# 	doc = nlp(a)
-# 	people = []
-# 	org = []
-# 	for ent in doc.ents:
-# 		if ent.label_ == "PERSON":
-# 			people.append(ent)
-# 		if ent.label_ == "ORG": 
-# 			org.append(ent)
-# 	dic['People'].append(people)
-# 	dic['Organisation'].append(org)
-# 	entities_by_article.append(dic)
+def get_sentiment():
+    reddit_results, reddit_post_results = get_site_sentiment("Reddit")
+    twitter_results, twitter_post_results = get_site_sentiment("Twitter")
+    
+    post_comparison = reddit_post_results.merge(twitter_post_results, on='Post ID', how='left')
+    post_comparison["Diff"] = post_comparison["Twitter Score"] - post_comparison["Reddit Score"]
+    
+    ################################################################################
+    ## Ignore this part for now 
+    test_neg = (post_comparison["Diff"] < 0).count()
+    test_pos = (post_comparison["Diff"] > 0).count()
 
-# print(entities_by_article)
+    print(test_neg)
+    print(test_pos)
 
-# check = pd.DataFrame(entities_by_article)
-# check['People'] = check['People'].astype(str)
-# check['Organisation'] = check['Organisation'].astype(str)
+    diff_neg = post_comparison["Diff"][(post_comparison['Diff']>0)].mean(numeric_only=True,skipna=True)
+    diff_pos = post_comparison[(post_comparison["Diff"]<0)].mean(numeric_only=True,skipna=True)
+    diff_data = [["Reddit Positive", diff_neg], ["Twitter Positive", diff_pos]]
+    diff_df = pd.DataFrame(diff_data, columns=["Mean Diff","Value"])
+    
+    #print("Mean difference in scores when Reddit is more positive is " + str(diff_neg))
+    #print("Mean difference in scores when Twitter is more positive is " + str(diff_pos))
+    ###############################################################################
 
-# print(check)
-# print(check.dtypes)
+    # send shit to database reddit_results twitter_results + new table for post_comparison
+    return 
 
-# insert_entity = """
-# insert into reddit_comments (people, organisation)
-# VALUES (%(People)s, %(Organisation)s); 
-# """
+if __name__ == "__main__":
+    get_sentiment()
 
-# with engine.connect() as connection:
-# 	check.to_sql('reddit_comments', con=connection, if_exists='append',index=False)
+ttime =  time.time() - start
+print("Runtime is " + str(ttime))
 
-
-
+#comments.to_csv("reddit_comments_pranjal.csv")

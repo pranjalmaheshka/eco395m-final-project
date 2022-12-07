@@ -100,7 +100,6 @@ print(len(tweet_df['NORP']), tweet_df)
 # with engine.connect() as connection:
 #   tweet_df.to_sql('temp_twit_comm_entity', con=connection, if_exists='replace',index=False)
 
-
 # twitter_comment_sql = """
 #     UPDATE twitter_comments AS f
 #     SET people = t.people, organization = t.organization
