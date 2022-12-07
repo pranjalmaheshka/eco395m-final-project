@@ -6,24 +6,25 @@ sia = SentimentIntensityAnalyzer()
 import time
 start = time.time()
 
-def get_sentiment(site):
+def get_site_sentiment(site):
     if site == "Reddit":
         """Querying reddit comments from SQL"""
         query = """
-        select * from reddit_comments rc limit 50
+        select * from reddit_comments rc limit 500 
         """
         likes = "upvotes"
         text = "comment"
+        rtitle = "Reddit Score"
     elif site == "Twitter":
         """Querying Twitter comments from SQL"""
         query = """
-        select * from twitter_comments tc limit 1000
+        select * from twitter_comments tc limit 500
         """
         likes = "likes"
         text = "tweet"
+        rtitle = "Twitter Score"
     
     comments = pd.read_sql_query(query, engine)
-    print(comments.columns)
 
     # Vader: 1 is neg, 2 is neu, 3 is pos 
     for ind in comments.index:
@@ -32,6 +33,7 @@ def get_sentiment(site):
         comments.at[ind,'score_neu'] = score["neu"]
         comments.at[ind,'score_pos'] = score["pos"]
         comments.at[ind,'score_compound'] = score["compound"]
+        comments["scaled_score"] = (comments["score_compound"] + 1)/2
 
         # Creating new scoring system: 1 = very neg, 2 = neg, 3 = neu, 4 = pos, 5 = very pos 
         if score["neg"] >= 0.5:
@@ -51,55 +53,57 @@ def get_sentiment(site):
                 else:
                     comments.at[ind,'score'] = 4
         else:
-            comments.at[ind,'score'] = 100
+            comments.at[ind,'score'] = 3
 
-    # Try testing code with removing comments that are less than 50 characters 
+    # Site level analysis 
     sentiments = pd.Series(["","Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
-    sentiments_df = comments.groupby(['score'])['score'].count()
-    upvotes_series = comments.groupby(['score'])[likes].sum()
-    votes_by_sentiment = upvotes_series/sentiments_df
+    sentiments_count = comments.groupby(['score'])['score'].count()
+    sentiments_pct = sentiments_count/len(sentiments_count)
+    upvotes_count = comments.groupby(['score'])[likes].sum()
+    upvotes_pct = upvotes_count*100/sum(upvotes_count)
+    votes_by_sentiment = upvotes_count/sentiments_count
 
-    results = pd.concat([sentiments, upvotes_series, sentiments_df,votes_by_sentiment], axis=1)
-    results.columns =["Sentiment", "Sentiment Count", "Total Upvotes", "Avg Upvotes"]
-    results = results.iloc[1: , :]
-    results.index.name=None
-    results = results.astype({"Avg Upvotes": int})
+    site_results = pd.concat([sentiments, sentiments_count, sentiments_pct, upvotes_pct, votes_by_sentiment], axis=1)
+    site_results.columns =["Sentiment", "Sentiment Count", "Sentiment Pct", "Upvotes Pct", "Upvotes Avg"]
+    site_results = site_results.iloc[1: , :]
+    site_results.index.name=None
+    site_results = site_results.astype({"Upvotes Avg": int})
 
-    # Cross site - post by post analysis 
-    post1 = comments.groupby(["reddit_post_id","score"])[likes].sum()
-    post2 = comments.groupby(["reddit_post_id","score"])["score"].count()
-    postresults= pd.concat([post1, post2], axis=1)
+    # Site level comparison 
+    post_sentiment = comments.groupby(["reddit_post_id"])["scaled_score"].mean().reset_index()
+    post_sentiment.columns =["Post ID", rtitle]
 
-    post1.reset_index(name='Likes').to_string(index=False)
-    post2.reset_index(name='Comment Count').to_string(index=False)
+    return site_results, post_sentiment 
 
-    #print(post1)
-    #print(type(post1))
+def get_sentiment():
+    reddit_results, reddit_post_results = get_site_sentiment("Reddit")
+    twitter_results, twitter_post_results = get_site_sentiment("Twitter")
     
-    postresults= pd.concat([post1, post2], axis=1)
-    #print(postresults)
-    postresults = postresults.iloc[1: , :]
-    #print(postresults)
-    print(type(postresults))
-    print(postresults.columns)
-    postresults = postresults.rename(columns={'reddit_post_id': 'PostID'})
-    print(postresults)
-
-    return results, postresults 
-
-def sentiment_results():
-    results1 = get_sentiment("Reddit")
-    results2 = get_sentiment("Twitter")
+    post_comparison = reddit_post_results.merge(twitter_post_results, on='Post ID', how='left')
+    post_comparison["Diff"] = post_comparison["Twitter Score"] - post_comparison["Reddit Score"]
     
+    ################################################################################
+    ## Ignore this part for now 
+    test_neg = (post_comparison["Diff"] < 0).count()
+    test_pos = (post_comparison["Diff"] > 0).count()
+
+    print(test_neg)
+    print(test_pos)
+
+    diff_neg = post_comparison["Diff"][(post_comparison['Diff']>0)].mean(numeric_only=True,skipna=True)
+    diff_pos = post_comparison[(post_comparison["Diff"]<0)].mean(numeric_only=True,skipna=True)
+    diff_data = [["Reddit Positive", diff_neg], ["Twitter Positive", diff_pos]]
+    diff_df = pd.DataFrame(diff_data, columns=["Mean Diff","Value"])
+    
+    #print("Mean difference in scores when Reddit is more positive is " + str(diff_neg))
+    #print("Mean difference in scores when Twitter is more positive is " + str(diff_pos))
+    ###############################################################################
+
+    # send shit to database reddit_results twitter_results + new table for post_comparison
     return 
 
 if __name__ == "__main__":
-    results, posts = get_sentiment("Reddit")
-    print("Reddit results are")
-    print(results)
-    #results = get_sentiment("Twitter")
-    #print("Twitter results are")
-    #print(results)
+    get_sentiment()
 
 ttime =  time.time() - start
 print("Runtime is " + str(ttime))
