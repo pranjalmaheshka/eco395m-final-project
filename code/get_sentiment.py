@@ -54,6 +54,34 @@ def get_site_sentiment(site):
                     comments.at[ind,'score'] = 4
         else:
             comments.at[ind,'score'] = 3
+            
+        if site=="Reddit":
+        print(comments)
+        with engine.connect() as connection:
+            comments.to_sql('temp_red_comm_sentiment', con=connection, if_exists='replace',index=False)
+
+        reddit_sentiment_sql = """
+            UPDATE reddit_comments AS f
+            SET score_neg = t.score_neg, score_pos = t.score_pos, score_compound = t.score_compound, score = t.score
+            FROM temp_red_comm_sentiment AS t
+            WHERE f.reddit_post_id = t.reddit_post_id
+            """
+        with engine.begin() as conn:     # TRANSACTION
+                conn.execute(reddit_sentiment_sql)
+
+        if site=="Twitter":
+            print(comments)
+        with engine.connect() as connection:
+                comments.to_sql('temp_twit_comm_sentiment', con=connection, if_exists='replace',index=False)
+
+        twitter_sentiment_sql = """
+            UPDATE twitter_comments AS f
+            SET score_neg = t.score_neg, score_pos = t.score_pos, score_compound = t.score_compound, score = t.score
+            FROM temp_twit_comm_sentiment AS t
+            WHERE f.reddit_post_id = t.reddit_post_id
+            """
+        with engine.begin() as conn:     # TRANSACTION
+                conn.execute(twitter_sentiment_sql)
 
     # Site level analysis 
     sentiments = pd.Series(["","Very Negative", "Negative", "Neutral", "Positive", "Very Positive"])
