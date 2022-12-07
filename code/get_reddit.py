@@ -188,6 +188,9 @@ def nlp_columns():
     ALTER TABLE reddit_comments
     add people varchar,
     add organization varchar,
+    add NORP varchar,
+    add user_organization varchar,
+    add user_NORP varchar,
     add score_neg numeric,
     add score_neu numeric,
     add score_pos numeric,
