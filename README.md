@@ -24,7 +24,7 @@
   
 <h3> Reproducing Code </h3> 
 
-Install the necessary packages with pip install -r requirements.txt. Run `code/main.py' to successfully generate all the results. This is what will run in the background: 
+Install the necessary packages with `pip install -r requirements.txt`. Run `code/main.py` to successfully generate all the results. This is what will run in the background: 
 
   1. Creating a database: Make a PostgreSQL 13 database instance on GCP. Use GCP SQL to create a database called `reddit` that stores the scraped data from Reddit. Connect your database to a SQL editor of your choice (we used DBeaver). You can enter your credentials (host, username, database, and IP) in demo.env for establishing the connection.    
   
