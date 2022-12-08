@@ -16,17 +16,15 @@ from get_person import get_user_norp
 from get_person import upload_reddit_entity
 from get_person import upload_twitter_entity
 from get_person import upload_user_entity
+from dashboard import dashboard 
 
 
-# Step 1: Make sure GCP database instance is configured
+# Scrape Reddit and Twitter
 scrape_reddit(50)
 twitter_scraper()
 
-# Step 2: Upload csv output in eco395m-final-project/artifacts
+# NLP Analysis
 get_sentiment()
-
-
-#Steo 3: Run get_person to analyse data and updata database with recognised entities
 get_reddit_people()
 get_reddit_org()
 get_reddit_norp()
@@ -40,8 +38,5 @@ upload_reddit_entity()
 upload_twitter_entity()
 upload_user_entity()
 
-# Step 4: Data Visualization
-
-
-if __name__ == "__main__":
-    #
+# Data Visualization
+dashboard()
