@@ -7,8 +7,6 @@
  <h3> Introduction </h3> 
  
  This project analyzes bias and polarity in political discussions on Reddit and Twitter. The goal is to identify if there discussions on these websites lean in one direction or the other in terms of the sentiment and language used. For example, does Reddit usually more negative comments than Twitter for the same political conversation? Is there a prevalence for certain political viewpoints on either website?
- 
- ![](https://github.com/eco395m-final-project/uploads/giphy.gif)
   
  <h3> Methodology </h3> 
    We scraped Reddit and Twitter using APIs, added the post/comment information to a SQL database on Google Cloud Platform (GCP), and used SQL to query and analyse the data using Natural Language Processing (NLP) toolkits. The SQL databases were uploaded, and the data analysis outputs were shown using Streamlit. 
@@ -19,9 +17,9 @@
   
   3. _Natural Language Processing (NLP):_ We used the nltk (Vader) and spaCy packages on Python to analyze sentiments and entities in the posts and the comments scraped from both platforms. Vader assigns a positive, a neutral, and a negative sentiment value to each comment that sums to 1. We created a framework in order to rate the comments on an ordinal 1-5 scale where 1 - Very Negative, 2 - Negative, 3 - Neutral, 4- Positive, and 5 - Very Positive based off the raw sentiment scores provided by Vader.  
   
-<h3> Reproducing Code CHECK SECTION</h3> 
+<h3> Reproducing Code </h3> 
 
-In this section, we outline how to run our code to get successful results. We have X parts to our code: 
+Install the necessary packages with pip install -r requirements.txt. Run `code/main.py' to successfully generate all the results. This is what will run in the background: 
 
   1. Creating a database: Make a PostgreSQL 13 database instance on Google Cloud Platform (GCP). Use GCP SQL to create a database called `reddit` that stores the scraped data from Reddit. Connect your database to a SQL editor of your choice (we used DBeaver). You can enter your credentials (host, username, database, and IP) in demo.env for establishing the connection.    
   
@@ -31,9 +29,9 @@ In this section, we outline how to run our code to get successful results. We ha
   
   4. Get sentiment scores: We used the nltk (Vader) to calculate sentiment scores for Reddit and Twitter comments. Run `code/get_sentiment.py` for the same and upload scores to the SQL database. It updates the reddit_comments and twitter_comments table with sentiment scores for each post. It also generates three new tables: `reddit_site-results`, `twitter_site-results`, and `post_comparison`. The site-results table stores aggregate sentiment scores for Reddit and Twitter data. The post_comparison table contains a post-by-post comparison of sentiment scores for Reddit and Twitter. 
   
-  4. Recognise entities: We used spaCy to recongise entities in the Reddit and Twitter data. We first generated tokens for the data in the `get_token.py`. After running that file, run `get_person.py` to store NLP-recognised people, organisations, and nationalities, or religious and political parties (NORP). `entity_analysis.py` calculates the top occurrences of each entity for the Reddit and Twitter data. We also included the analysis of the Twitter users description in these files. 
+  5. Recognise entities: We used spaCy to recongise entities in the Reddit and Twitter data. We first generated tokens for the data in the `get_token.py`. After running that file, run `get_person.py` to store NLP-recognised people, organisations, and nationalities, or religious and political parties (NORP). `entity_analysis.py` calculates the top occurrences of each entity for the Reddit and Twitter data. We also included the analysis of the Twitter users description in these files. 
   
-  5. Streamlit: WOOHOO dashboard 
+  6. Streamlit: WOOHOO dashboard 
   
   
 <h3> Results </h3> 
