@@ -6,7 +6,6 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 nlp.max_length = 100000000
 
-'''Cleaning Reddit data'''
 reddit_comments = """
 select
     id,
@@ -19,6 +18,7 @@ group by
 """
 
 def get_reddit_tokens(): 
+    '''Cleaning Reddit data'''
     red_df = pd.read_sql_query(reddit_comments, engine)
 
     red_df['comment'] = red_df['comment'].astype(str)
@@ -35,11 +35,8 @@ def get_reddit_tokens():
 
     red_tokens_df = pd.DataFrame.from_records(red, columns=['Token','Count'])
 
+   
 
-print('Length of Reddit tokens', len(red_tokens_df), red_tokens_df)
-
-
-'''Cleaning Twitter data'''
 twitter_comments = """
 select
     id,
@@ -52,6 +49,7 @@ group by
 """
 
 def get_twitter_tokens(): 
+    '''Cleaning Twitter data'''
     tweet_df = pd.read_sql_query(twitter_comments, engine)
 
     tweet_df['tweet'] = tweet_df['tweet'].astype(str)
@@ -68,10 +66,6 @@ def get_twitter_tokens():
 
     twit_tokens_df = pd.DataFrame.from_records(twit, columns=['Token','Count'])
 
-print('Length of Twitter tokens', len(twit_tokens_df), twit_tokens_df)
-
-
-'''Cleaning Twitter descriptions'''
 twitter_desc = """
 select
     id, reddit_post_id,
@@ -83,6 +77,7 @@ group by
 """
 
 def get_twituser_tokens(): 
+    '''Cleaning Twitter descriptions'''
     desc_df = pd.read_sql_query(twitter_desc, engine)
 
     desc_df['user_desc'] = desc_df['user_desc'].astype(str)
@@ -98,5 +93,3 @@ def get_twituser_tokens():
     desc = Counter(twitter_desc_items).most_common(50)
 
     desc_tokens_df = pd.DataFrame.from_records(desc, columns=['Token','Count'])
-
-print('Length of Twitter tokens', len(desc_tokens_df), desc_tokens_df)
