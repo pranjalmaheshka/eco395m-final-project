@@ -12,8 +12,8 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 nlp.max_length = 5000000
 
-'''Entity recognition for Reddit comments'''
 def get_reddit_people():
+    '''Entity recognition for people in Reddit comments'''
     reddit_person = []
     for ent in red_tokens.ents:
         if ent.label_ == 'PERSON':
@@ -26,6 +26,7 @@ def get_reddit_people():
 print(len(red_df['people']), red_df)
 
 def get_reddit_org():
+    '''Entity recognition for organizations in Reddit comments'''
     reddit_org = []
     for ent in red_tokens.ents:
         if ent.label_ == 'ORG':
@@ -35,9 +36,9 @@ def get_reddit_org():
 
     red_df['organization'] = pd.Series(reddit_org)
     red_df['organization'] = red_df['organization'].astype(str)
-print(len(red_df['organization']), red_df)
 
 def get_reddit_norp():
+    '''Entity recognition for NORP in Reddit comments'''
     reddit_norp = []
     for ent in red_tokens.ents:
         if ent.label_ == 'NORP':
@@ -47,11 +48,10 @@ def get_reddit_norp():
 
     red_df['NORP'] = pd.Series(reddit_norp)
     red_df['NORP'] = red_df['NORP'].astype(str)
-print(len(red_df['NORP']), red_df)
 
 def upload_reddit_entity():
+    '''Upload entities in Reddit comments'''
     red_df.to_sql('temp_red_comm_entity', con=engine, if_exists='replace',index=False)
-
 
     reddit_comment_sql = """
         UPDATE reddit_comments AS f
@@ -59,13 +59,13 @@ def upload_reddit_entity():
         FROM temp_red_comm_entity AS t
         WHERE f.id = t.id
     """
-
-    with engine.begin() as conn:     # TRANSACTION
+    
+    with engine.begin() as conn:     # Transaction
         conn.exec_driver_sql(reddit_comment_sql)
 
 
-'''Entity recognition for Tweets'''
 def get_twitter_people():
+    '''Entity recognition for people in Tweets'''
     twitter_person = []
     for ent in twitter_tokens.ents:
         if ent.label_ == 'PERSON':
@@ -75,9 +75,9 @@ def get_twitter_people():
 
     tweet_df['people'] = pd.Series(twitter_person)
     tweet_df['people'] = tweet_df['people'].astype(str)
-print(len(tweet_df['people']), tweet_df)
 
 def get_twitter_org():
+    '''Entity recognition for organizations in Tweets'''
     twitter_org = []
     for ent in twitter_tokens.ents:
         if ent.label_ == 'ORG':
@@ -87,9 +87,9 @@ def get_twitter_org():
 
     tweet_df['organization'] = pd.Series(twitter_org)
     tweet_df['organization'] = tweet_df['organization'].astype(str)
-print(len(tweet_df['organization']), tweet_df)
 
 def get_twitter_norp():
+    '''Entity recognition for NORP in Tweets'''
     twitter_norp = []
     for ent in twitter_tokens.ents:
         if ent.label_ == 'NORP':
@@ -99,9 +99,9 @@ def get_twitter_norp():
 
     tweet_df['NORP'] = pd.Series(twitter_norp)
     tweet_df['NORP'] = tweet_df['NORP'].astype(str)
-print(len(tweet_df['NORP']), tweet_df)
 
 def upload_twitter_entity():
+    '''Upload entities in Tweets'''
     tweet_df.to_sql('temp_twit_comm_entity', con=engine, if_exists='replace',index=False)
 
     twitter_comment_sql = """
@@ -111,7 +111,7 @@ def upload_twitter_entity():
         WHERE f.id = t.id
     """
 
-    with engine.begin() as conn:     # TRANSACTION
+    with engine.begin() as conn:     # Transaction
         conn.exec_driver_sql(twitter_comment_sql)
 
 '''Entity recognition for Twitter users'''
@@ -125,7 +125,6 @@ def get_user_org():
 
     desc_df['user_organization'] = pd.Series(user_org)
     desc_df['user_organization'] = desc_df['user_organization'].astype(str)
-print(len(desc_df['user_organization']), desc_df)
 
 def get_user_norp():
     user_norp = []
@@ -137,8 +136,6 @@ def get_user_norp():
 
     desc_df['user_NORP'] = pd.Series(user_norp)
     desc_df['user_NORP'] = desc_df['user_NORP'].astype(str)
-print(len(desc_df['user_NORP']), desc_df)
-
 
 def upload_user_entity():
     desc_df.to_sql('twitter_user', con=engine, if_exists='replace',index=False)
