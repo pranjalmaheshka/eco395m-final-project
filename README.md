@@ -56,7 +56,8 @@ _How are people engaging with posts?_
   Comparing both the sites we can see that about 10% of the times there is significant difference in overall sentiment regarding a post (<0.20 points and the scaled score is on a [-1,1] scale). 
 
 _What does frequently come up?_ 																       
-	Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second on Reddit. Interestingly, Donald Trump comes up 87 times, and Jesus follows him with 84 mentions. Twitter data is not as clean as Reddit but we can see Donald Trump coming in second after Biden. 
+	
+Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second on Reddit. Interestingly, Donald Trump comes up 87 times, and Jesus follows him with 84 mentions. Twitter data is not as clean as Reddit but we can see Donald Trump coming in second after Biden. 
 
 Reddit clearly has more mentions of Republican-affiliated individuals when compared to Twitter. John Fetterman was the only Democrat that received mentions on both Reddit and Twitter. But Obama has the third-highest mentions of all individuals on Reddit.
 
