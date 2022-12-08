@@ -295,160 +295,26 @@ def twitter_sentiment():
     y = alt.Y('y', axis=alt.Axis(title="Sentiment Count"),)).properties(width=600, height=400)
     return chart
 
-def comparison():
-    query = """
-        select * from (with cte as (select "Post ID", "Reddit Score", "Twitter Score", abs("Diff") as diff from post_comparison 
-        order by diff desc)
-        select a."Reddit Score", a."Twitter Score", a."diff",a."Post ID", b.rank, b.reddit_post_id from (select title, rank, 
-        reddit_post_id from reddit_posts) b left join cte a on a."Post ID"=b.reddit_post_id) query where diff is not 
-        null order by diff desc limit 3;
-    """
-    df = pd.read_sql_query(query, engine)
-    reddit = df["Reddit Score"].tolist()
-    twitter = df["Twitter Score"].tolist()
-    rank = df["rank"].tolist()
-
-    df = pd.DataFrame([["Article Ranking: "+[rank[0], reddit[0], "Reddit"], 
-                   ["Article Ranking: "+[rank[0], twitter[0], "Twitter"], 
-                   ["Article Ranking: "+[rank[1], reddit[1], "Reddit"], 
-                   ["Article Ranking: "+[rank[1], twitter[1], "Twitter"],
-                   ["Article Ranking: "+[rank[2], reddit[2], "Reddit"], 
-                   ["Article Ranking: "+[rank[2], twitter[2], "Twitter"]], 
-                  columns=["Ranking", "Score", "Media"])
-
-    chart = Chart(df).mark_bar().encode(
-   column=Column('Genre'),
-   x=X('Gender'),
-   y=Y('Rating')
-
-    df_chart = pd.DataFrame({
-        "x": text,
-        "y": count})
-    chart = alt.Chart(df_chart).mark_bar().encode(
-    x = alt.X("x", axis=alt.Axis(title="Top 20 Words")),
-    y = alt.Y("y", axis=alt.Axis(title=" Count"),)).properties(width=600, height=400)
-
-    return chart
-
-
-
-
-
 
 def sentiment_analysis():
+    query1 = """
+        select "Sentiment Count", "Sentiment Pct", "Upvotes Avg" from  "reddit_site-results";
+    """
+    query2 = """
+        select "Sentiment Count","Sentiment Pct", "Upvotes Avg" from  "twitter_site-results";
+    """
+    df1 = pd.read_sql_query(query1, engine)
+    df1=df1.astype(str)
+    df2 = pd.read_sql_query(query2, engine)
+    df2=df2.astype(str)
 
     results = {
     "Sentiment": ["Very Negative", "Negative", "Neutral", "Positive", "Very Positive"], 
-    "Reddit Sentiment Count": [1.1234567, 2.2345678, 3.3456789, 4.4567890, 5.098765432],
-    "Twitter Sentiment Count": [1.1234567, 2.2345678, 3.3456789, 4.4567890, 5.098765432],
-    "Reddit Total Upvotes": [1.1234567, 2.2345678, 3.3456789, 4.4567890, 5.098765432],
-    "Twitter Total Upvotes": [1.1234567, 2.2345678, 3.3456789, 4.4567890, 5.098765432],
-    "Reddit Avg Upvotes": [1.1234567, 2.2345678, 3.3456789, 4.4567890, 5.098765432],
-    "Twitter Avg Upvotes": [1.1234567, 2.2345678, 3.3456789, 4.4567890, 5.098765432]}
+    "Reddit Sentiment Count": df1["Sentiment Count"].tolist(),
+    "Twitter Sentiment Count": df2["Sentiment Count"].tolist(),
+    "Reddit Total Upvotes": df1["Sentiment Pct"].tolist(),
+    "Twitter Total Upvotes": df2["Sentiment Pct"].tolist(),
+    "Reddit Avg Upvotes": df1["Upvotes Avg"].tolist(),
+    "Twitter Avg Upvotes": df2["Upvotes Avg"].tolist()}
 
     return(pd.DataFrame(results))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # df = pd.DataFrame({
-    # 'strike': [-200,-225,250,275,300,325,-350,200,225,250,275,-300,325,350],
-    # 'opttype': ['ce','ce','ce','ce','ce','ce','ce','pe','pe','pe','pe','pe','pe','pe' ],
-    # 'oi': [100,150,500,800,450,200,77,50,500,210,300,150,60,17]})
-    # chart = alt.Chart(df).mark_bar().encode(
-    # x='strike:N',
-    # y='oi:Q',
-    # color='opttype:N',
-    # column='opttype:N').properties(width=300)
-    # return chart
-
-
-    # df = pd.DataFrame({
-    # 'x': [1, 2, 3, 4, 5, 1, 2, 9, 4, 5],
-    # 'y': [2, -1, 5, -3, -1, 1, 2, 3, 4, 5]})
-    # chart = alt.Chart(df).mark_bar().encode(
-    # x=alt.X("x:O", scale=alt.Scale(domain=[0, 10])),
-    # y=alt.Y("y:Q", scale=alt.Scale(domain=[-8, 8]),)).properties(width=1000, height=400)
-
-    # df = pd.DataFrame({
-    # 'x': [1, 2, 3, 4, 5],
-    # 'y': [2, -1, 5, -3, -1]})
-    # chart = alt.Chart(df).mark_bar().encode(
-    # x='x:O',
-    # y='y:Q').properties(width=800, height=400)
-
-    # return chart
-
-    
-
-
-
-
-
-
-
-
-    # df = pd.DataFrame({
-    # "Reddit Rating": [1, 2, 3, 4, 5, 1, 2, 9, 4, 5],
-    # "Twitter Ranking": [2, -1, 5, -3, -1, 1, 2, 3, 4, 5],
-    # "Reddit Likes": [1, 2, 3, 4, 5, 1, 20, 9, 4, 5],
-    # "Twitter Likes": [10, 2, 3, 4, 5, 1, 2, 9, 4, 5],})
-    # chart = alt.Chart(df).mark_circle().encode(
-    # x="Reddit Rating",
-    # y="Twitter Ranking",
-    # color = "Twitter Likes",
-    # size = "Reddit Likes")
-
-    # return chart
-
-
-# def reddit_top_comments():
-#     reddit_top_three_comments = """
-#         select * from (select title, comment, upvotes,rank() over(partition by title order by upvotes desc) rank
-#         from reddit_comments 
-#         order by title, rank) p
-#         where rank <= 3;
-#     """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
