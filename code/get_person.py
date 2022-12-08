@@ -1,5 +1,4 @@
 from database import engine
-from collections import Counter
 from get_token import red_tokens
 from get_token import red_df
 from get_token import twitter_tokens
