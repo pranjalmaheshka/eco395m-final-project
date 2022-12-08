@@ -71,6 +71,12 @@ def get_site_sentiment(site):
     test1 = site_results[["Sentiment Count", "Sentiment Pct", "Upvotes Pct"]]
     print(test1)
     #site_results.to_sql('site_results', con=engine, if_exists='replace',index=False)
+    
+    if site=="Reddit":
+        site_results.to_sql('reddit_site-results', con=engine, if_exists='replace',index=False)
+    
+    if site=="Twitter":
+        site_results.to_sql('twitter_site-results', con=engine, if_exists='replace',index=False)
 
     # Site level comparison
     post_sentiment = comments.groupby(["reddit_post_id"])["score_compound"].mean().reset_index()
@@ -109,6 +115,9 @@ def get_sentiment():
     post_comparison = reddit_post_results.merge(twitter_post_results, on='Post ID', how='left')    
     post_comparison["Diff"] = post_comparison["Twitter Score"] - post_comparison["Reddit Score"]
     post_comparison['Same'] = np.where(abs(post_comparison['Diff'])<= 0.2, True, False)
+    
+    post_comparison.to_sql('post_comparison', con=engine, if_exists='replace',index=False)
+
     return
 
 if __name__ == "__main__":
