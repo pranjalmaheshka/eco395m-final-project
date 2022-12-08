@@ -16,6 +16,7 @@ import spacy
 
 reddit_person_counts = Counter(reddit_person).most_common(30)
 red_df_person = pd.DataFrame(reddit_person_counts, columns =['text', 'count'])
+red_df_person.to_sql('red_df_person', con=engine, if_exists='replace',index=False)
 
 print('Length of red_df_person', len(red_df_person), red_df_person)
 
@@ -23,6 +24,7 @@ print('Length of red_df_person', len(red_df_person), red_df_person)
         
 reddit_norp_counts = Counter(reddit_norp).most_common(20)
 red_df_norp = pd.DataFrame(reddit_norp_counts, columns =['text', 'count'])
+red_df_norp.to_sql('red_df_norp', con=engine, if_exists='replace',index=False)
 
 print('Length of red_df_norp', len(red_df_norp), red_df_norp)
 
@@ -30,6 +32,7 @@ print('Length of red_df_norp', len(red_df_norp), red_df_norp)
         
 reddit_org_counts = Counter(reddit_org).most_common(20)
 red_df_org = pd.DataFrame(reddit_org_counts, columns =['text', 'count'])
+red_df_org.to_sql('red_df_org', con=engine, if_exists='replace',index=False)
 
 print('Length of red_df_org', len(red_df_org), red_df_org)
 
@@ -38,6 +41,7 @@ print('Length of red_df_org', len(red_df_org), red_df_org)
         
 twitter_person_counts = Counter(twitter_person).most_common(20)
 twitter_df_person = pd.DataFrame(twitter_person_counts, columns =['text', 'count'])
+twitter_df_person.to_sql('twitter_df_person', con=engine, if_exists='replace',index=False)
 
 print('Length of twitter_person_counts', len(twitter_df_person), twitter_df_person)
 
@@ -45,6 +49,7 @@ print('Length of twitter_person_counts', len(twitter_df_person), twitter_df_pers
         
 twitter_norp_counts = Counter(twitter_norp).most_common(20)
 twitter_df_norp = pd.DataFrame(twitter_norp_counts, columns =['text', 'count'])
+twitter_df_norp.to_sql('twitter_df_norp', con=engine, if_exists='replace',index=False)
 
 print('Length of twitter_df_norp', len(twitter_df_norp), twitter_df_norp)
 
@@ -53,16 +58,19 @@ print('Length of twitter_df_norp', len(twitter_df_norp), twitter_df_norp)
 
 twitter_org_counts = Counter(twitter_org).most_common(20)
 twitter_df_org = pd.DataFrame(twitter_org_counts, columns =['text', 'count'])
+twitter_df_org.to_sql('twitter_df_org', con=engine, if_exists='replace',index=False)
 
 print('Length of twitter_df_org', len(twitter_df_org), twitter_df_org)
 
 '''Analysis: Twitter description'''
 user_org_counts = Counter(user_org).most_common(20)
 user_df_org = pd.DataFrame(user_org_counts, columns =['text', 'count'])
+user_df_org.to_sql('user_df_org', con=engine, if_exists='replace',index=False)
 
 print('Length of user_df_org', len(user_df_org), user_df_org)
 
 user_norp_counts = Counter(user_norp).most_common(20)
 user_df_norp = pd.DataFrame(user_norp_counts, columns =['text', 'count'])
+user_df_norp.to_sql('user_df_norp', con=engine, if_exists='replace',index=False)
 
 print('Length of user_df_norp', len(user_df_norp), user_df_norp)
