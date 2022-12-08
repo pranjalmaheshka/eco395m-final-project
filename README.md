@@ -39,7 +39,7 @@ Install the necessary packages with pip install -r requirements.txt. Run `code/m
   6. Streamlit: Run `code/dashboard.py` to generate the dashboard for a visual representation of our results. It will open as a new tab in your browser. 
   
   
-<h3> What we find </h3> 
+<h3> Results </h3> 
 
 _How are people engaging with posts?_ 
 	
@@ -49,12 +49,12 @@ _How are people engaging with posts?_
   
   Overall, the prevalence of neutral comments is a little surprising because we normally see different sections of the population use these social media platforms. Our general experience often sees more opinionated individuals online and we expected a greater bias away from neutral. 
 
-	Comparing both the sites we can see that .. 
+	Comparing both the sites we can see that about 10% of the times there is significant difference in overall sentiment regarding a post (<0.20 points and the scaled score is on a [-1,1] scale). 
 
 _What does frequently come up?_ 
 	Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second  
 
-<h3> Limitations and room for future research </h3>
+<h3> Limitations and Future Considerations </h3>
   Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. 
 	
   Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, acronyms, and even emojis. Vader's rating system uses a dictionary-based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
@@ -66,4 +66,4 @@ _What does frequently come up?_
   Next steps could include analyzing the sentiment of the news article, identifying political biases in the news, checking to see the accuracy of the news reported relative to other reputable news publications, and then analyzing user sentiments and political biases. We can also analyse the sentiment regarding the recognised entities. Certain other considerations also include stringing together comments that are posted across multiple tweets on Twitter for a more thorough analysis of the sentiment. Shorter comments and tweets that are just a few words could be excluded, emojis can be dropped, and the sentiment analysis could include an expanded dictionary for Reddit and Twitter specific language. 
   
 <h3> Conclusion </h3> 
-  Overall, there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. The biggest difference is the prevalence of neutral comments. An interesting observation is that negative comments see the highest level of engagement on both platforms. 
+  Overall, there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. The biggest difference is the prevalence of neutral comments. An interesting observation is that negative comments see the highest level of engagement on both platforms. Comparing posts across sites we see limited differences in sentiment for 10% of the posts. It is unclear what differentiates these posts in terms of poltiical bias or overall sentiment that could lead to these differences and that is an avenue for future analysis. 
