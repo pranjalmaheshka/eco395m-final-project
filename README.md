@@ -7,7 +7,12 @@
  <h3> Introduction </h3> 
  
  This project analyzes bias and polarity in political discussions on Reddit and Twitter. The goal is to identify if there discussions on these websites lean in one direction or the other in terms of the sentiment and language used. For example, does Reddit usually more negative comments than Twitter for the same political conversation? Is there a prevalence for certain political viewpoints on either website?
-  
+ 
+ 
+ <p align="center"> 
+ 	<img src="https://github.com/pranjalmaheshka/eco395m-final-project/blob/main/uploads/giphy.gif" />
+ </p>
+ 
  <h3> Methodology </h3> 
    We scraped Reddit and Twitter using APIs, added the post/comment information to a SQL database on Google Cloud Platform (GCP), and used SQL to query and analyse the data using Natural Language Processing (NLP) toolkits. The SQL databases were uploaded, and the data analysis outputs were shown using Streamlit. 
   
@@ -48,8 +53,9 @@ Install the necessary packages with pip install -r requirements.txt. Run `code/m
 
   We did not analyze the overall sentiment of the news articles themselves and could not identify if they had a political leaning. Accordingly, the sentiment analysis lacks a political viewpoint in seeing if the sites are biased towards one political ideology or another. 
 
-  Next steps could include analyzing the sentiment of the news article, identifying political biases in the news, checking to see the accuracy of the news reported relative to other reputable news publications, and then analyzing user sentiments and political biases. Certain other considerations also include stringing together comments that are posted across multiple tweets on Twitter for a more thorough analysis of the sentiment. Shorter comments and tweets that are just a few words could be excluded, emojis can be dropped, and the sentiment analysis could include an expanded dictionary for Reddit and Twitter specific language. 
+  We also were not able to lemmatize the tokens generated using spaCy as it took too much memory space. That would clean the final results much more; for example, Republican and Republicans would be the same word. 
   
+  Next steps could include analyzing the sentiment of the news article, identifying political biases in the news, checking to see the accuracy of the news reported relative to other reputable news publications, and then analyzing user sentiments and political biases. We can also analyse the sentiment regarding the recognised entities. Certain other considerations also include stringing together comments that are posted across multiple tweets on Twitter for a more thorough analysis of the sentiment. Shorter comments and tweets that are just a few words could be excluded, emojis can be dropped, and the sentiment analysis could include an expanded dictionary for Reddit and Twitter specific language. 
   
 <h3> Conclusion </h3> 
   Overall, there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. The biggest difference is the prevalence of neutral comments. An interesting observation is that negative comments see the highest level of engagement on both platforms. 
