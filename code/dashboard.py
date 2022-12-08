@@ -2,8 +2,6 @@ from data_analysis import *
 import streamlit as st
 import matplotlib.pyplot as plt
 
-
-
 def wordcloud_platform(platform):
 	'''Take user inputted Platform and Entity and returns formatted WordCloud'''
 	fig, ax = plt.subplots(figsize = (20, 10)) 
@@ -27,57 +25,6 @@ def wordcloud_platform(platform):
 	elif platform == "Twitter Organization":
 		ax.imshow(wc_twitter_org(), interpolation='bilinear')
 	return st.pyplot(fig)
-
-
-
-
-
-
-
-
-# def wordcloud_platform(platform):
-# 	'''Take user inputted Platform and Entity'''
-# 	if platform == "Reddit People":
-# 		fig, ax = plt.subplots(figsize = (20, 10)) 
-# 		plt.axis("off")
-# 		plt.tight_layout(pad=0)
-# 		ax.imshow(wc_reddit_people(), interpolation='bilinear')
-# 		return st.pyplot(fig)
-
-# 	elif platform == "Twitter People":
-# 		fig, ax = plt.subplots(figsize = (20, 10)) 
-# 		plt.axis("off")
-# 		plt.tight_layout(pad=0)
-# 		ax.imshow(wc_twitter_people(), interpolation='bilinear')
-# 		return st.pyplot(fig)
-
-# 	if platform == "Reddit Norp":
-# 		fig, ax = plt.subplots(figsize = (20, 10)) 
-# 		plt.axis("off")
-# 		plt.tight_layout(pad=0)
-# 		ax.imshow(wc_reddit_norp(), interpolation='bilinear')
-# 		return st.pyplot(fig)
-
-# 	elif platform == "Twitter Norp":
-# 		fig, ax = plt.subplots(figsize = (20, 10)) 
-# 		plt.axis("off")
-# 		plt.tight_layout(pad=0)
-# 		ax.imshow(wc_twitter_norp(), interpolation='bilinear')
-# 		return st.pyplot(fig)
-
-# 	if platform == "Reddit Organization":
-# 		fig, ax = plt.subplots(figsize = (20, 10)) 
-# 		plt.axis("off")
-# 		plt.tight_layout(pad=0)
-# 		ax.imshow(wc_reddit_org(), interpolation='bilinear')
-# 		return st.pyplot(fig)
-
-# 	elif platform == "Twitter Organization":
-# 		fig, ax = plt.subplots(figsize = (20, 10)) 
-# 		plt.axis("off")
-# 		plt.tight_layout(pad=0)
-# 		ax.imshow(wc_twitter_org(), interpolation='bilinear')
-# 		return st.pyplot(fig)
 
 def build():
 	'''Build Streamlit Dashboard'''
@@ -226,7 +173,7 @@ def build():
 	st.write("")
 	st.write("")
 	st.write("")
-	st.altair_chart(comparison())
+	#st.altair_chart(comparison())
 	st.markdown("***")
 	
 	st.write("")
@@ -301,25 +248,6 @@ def build():
 
 	st.markdown("***")
 
-
-
-
-
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
 	build()
-
 
