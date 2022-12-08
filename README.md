@@ -36,7 +36,7 @@ Install the necessary packages with `pip install -r requirements.txt`. Run `code
   
   5. Recognise entities: We used spaCy to recongise entities in the Reddit and Twitter data. We first generated tokens for the data in the `get_token.py`. After running that file, run `get_person.py` to store NLP-recognised people, organisations, and nationalities, or religious and political parties (NORP). `entity_analysis.py` calculates the top occurrences of each entity for the Reddit and Twitter data. We also included the analysis of the Twitter users description in these files. 
   
-  6. Streamlit: Run `code/dashboard.py` to generate the dashboard for a visual representation of our results. It will open as a new tab in your browser. 
+  6. Streamlit: Run `code/dashboard.py` to generate the dashboard for a visual representation of our results. It calls functions from `code/data_analysis.py` that analyse tables for the dashboard. It will open as a new tab in your browser. 
   
   
 <h3> Results </h3> 
