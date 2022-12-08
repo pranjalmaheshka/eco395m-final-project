@@ -97,6 +97,8 @@ def get_site_sentiment(site):
     site_results = site_results.iloc[1: , :]
     site_results.index.name=None
     site_results = site_results.astype({"Upvotes Avg": int})
+    site_results.to_sql('site_results', con=engine, if_exists='replace',index=False)
+
 
     # Site level comparison
     post_sentiment = comments.groupby(["reddit_post_id"])["score_compound"].mean().reset_index()
@@ -114,7 +116,7 @@ def get_sentiment():
 
 
 
-    ################################################################################
+    # ################################################################################
     ## Ignore this part for now
     test_neg = (post_comparison["Diff"] < 0).count()
     test_pos = (post_comparison["Diff"] > 0).count()
@@ -129,7 +131,7 @@ def get_sentiment():
 
     #print("Mean difference in scores when Reddit is more positive is " + str(diff_neg))
     #print("Mean difference in scores when Twitter is more positive is " + str(diff_pos))
-    ###############################################################################
+    # ###############################################################################
 
     # send shit to database reddit_results twitter_results + new table for post_comparison
     return
