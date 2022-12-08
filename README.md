@@ -35,15 +35,21 @@ Install the necessary packages with pip install -r requirements.txt. Run `code/m
   
   
 <h3> Results </h3> 
-  A sentiment analysis of Reddit comments showed the following split in sentiment. A majority of the comments are neutral while the positive and negative comments are  distributed relatively evenly. 
+  A sentiment analysis of Reddit comments showed the following split in sentiment. A majority of the comments are neutral while the positive and negative comments are distributed relatively evenly skewing towards the positive side. There are fewer upvotes on average for the very positive comments while the highest average upvotes are seen for negative comments. 
+
+  Twitter sees about 60% of the comments leaning neutral and it has 50% more very positive comments compared to very negative comments. Once again, the negative comments have the highest engagement at 185 likes on average versus just 13 likes on average for the very positive comments. 
   
-  This is a little surprising because we normally see different sections of the population use these social media platforms. We expected some bias away from neutral overall given the prevalence of negative information and negative comments online. Looking at the po;ularity of comments itself we see that ...
+  Overall, the prevalence of neutral comments is a little surprising because we normally see different sections of the population use these social media platforms. Our general experience often sees more opinionated individuals online and we expected a greater bias away from neutral. 
+
+	Comparing both the sites we can see that .. 
   
-<h3> Limitations </h3>
-  Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, aconyms, and even emojis. Vader's rating system uses a dictionary based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
+<h3> Limitations and Future Considerations </h3>
+  Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, acronyms, and even emojis. Vader's rating system uses a dictionary-based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
+
+  We did not analyze the overall sentiment of the news articles themselves and could not identify if they had a political leaning. Accordingly, the sentiment analysis lacks a political viewpoint in seeing if the sites are biased towards one political ideology or another. 
+
+  Next steps could include analyzing the sentiment of the news article, identifying political biases in the news, checking to see the accuracy of the news reported relative to other reputable news publications, and then analyzing user sentiments and political biases. Certain other considerations also include stringing together comments that are posted across multiple tweets on Twitter for a more thorough analysis of the sentiment. Shorter comments and tweets that are just a few words could be excluded, emojis can be dropped, and the sentiment analysis could include an expanded dictionary for Reddit and Twitter specific language. 
   
   
 <h3> Conclusion </h3> 
-  Overall there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. About half the comments are neutral in their language and the rest are equal parts split between negative and positive. About a quarter of the total comments could be classified as very negative or very positive but this does not lean in one direction. The conversations seem to be balanced overall and there is no clear bias. 
-  There is a lot of scope for future updates to this project. 
-  
+  Overall, there does not seem to be a significant difference in positive or negative sentiments across Reddit and Twitter on a post or site level. The biggest difference is the prevalence of neutral comments. An interesting observation is that negative comments see the highest level of engagement on both platforms. 
