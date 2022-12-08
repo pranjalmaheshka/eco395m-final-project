@@ -9,7 +9,12 @@ sia = SentimentIntensityAnalyzer()
 
 
 def get_site_sentiment(site):
-    """This pulls scraped data from Reddit or Twitter and then uses VADER to analyze sentiments. The outputs are used to compare both sites and the sentiment analysis is directed uploaded to a SQL Database on GCP."""
+    """
+    This pulls scraped data from Reddit or Twitter and then uses VADER to
+    analyze sentiments. The outputs are used to compare both sites and the
+    sentiment analysis is directed uploaded to a SQL Database on GCP.
+    """
+    
     if site == "Reddit":
         """Querying reddit comments from SQL"""
         query = """
@@ -164,7 +169,7 @@ def get_sentiment():
         "post_comparison", con=engine, if_exists="replace", index=False
     )
 
-    
+
 
 
 if __name__ == "__main__":
