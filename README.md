@@ -20,13 +20,13 @@
   
   2. _Scraping Twitter:_ We used the headlines and url for the news articles from Reddit to search related posts on Twitter. We used snscrape to scrape tweets and their replies along with the number of likes and retweets for both to gauge the level of engagement. 
   
-  3. _Natural Language Processing (NLP):_ We used the nltk (Vader) and spaCy packages on Python to analyze sentiments and entities in the posts and the comments scraped from both platforms. Vader assigns a positive, a neutral, and a negative sentiment value to each comment that sums to 1. We created a framework in order to rate the comments on an ordinal 1-5 scale where 1 - Very Negative, 2 - Negative, 3 - Neutral, 4- Positive, and 5 - Very Positive based off the raw sentiment scores provided by Vader.  
+  3. _Natural Language Processing (NLP):_ We used the nltk (Vader) and spaCy packages on Python to analyze sentiments and entities in the posts and the comments scraped from both platforms. Vader assigns a positive, a neutral, and a negative sentiment value to each comment that sums to 1. We created a framework in order to rate the comments on an ordinal 1-5 scale where 1 - Very Negative, 2 - Negative, 3 - Neutral, 4- Positive, and 5 - Very Positive based off the raw sentiment scores provided by Vader. Named-Entity-Recognition in spaCy identifies different categories mentioned or found in the text. We use it to identify people, organisations, and nationalities or religious and political parties for Reddit, Twitter databases and Twitter users.    
   
 <h3> Reproducing Code </h3> 
 
 Install the necessary packages with pip install -r requirements.txt. Run `code/main.py' to successfully generate all the results. This is what will run in the background: 
 
-  1. Creating a database: Make a PostgreSQL 13 database instance on Google Cloud Platform (GCP). Use GCP SQL to create a database called `reddit` that stores the scraped data from Reddit. Connect your database to a SQL editor of your choice (we used DBeaver). You can enter your credentials (host, username, database, and IP) in demo.env for establishing the connection.    
+  1. Creating a database: Make a PostgreSQL 13 database instance on GCP. Use GCP SQL to create a database called `reddit` that stores the scraped data from Reddit. Connect your database to a SQL editor of your choice (we used DBeaver). You can enter your credentials (host, username, database, and IP) in demo.env for establishing the connection.    
   
   2. Scrape Reddit: We used [PRAW](https://praw.readthedocs.io/en/stable/) to scrape the Politics category from Reddit. Enter credentials the same in demo.env. Run `code/scrape_reddit.py` to scrape the data and upload the outputs directly to the SQL database. We generate two tables: `reddit_posts` and `reddit_comments`. reddit_posts contains top 50 Reddit posts under the Politics thread with the reddit_post_id as the unique identifier. reddit_comments contains comments on each post. The same code/scrape_reddit.py also grabs the name of the news outlet and showcases where it lies on the political spectrum  based on [All Sides](https://www.allsides.com/media-bias/media-bias-chart) data.  
   
@@ -39,7 +39,9 @@ Install the necessary packages with pip install -r requirements.txt. Run `code/m
   6. Streamlit: Run `code/dashboard.py` to generate the dashboard for a visual representation of our results. It will open as a new tab in your browser. 
   
   
-<h3> Results </h3> 
+<h3> What we find </h3> 
+
+_How are people engaging with posts?_ 
   A sentiment analysis of Reddit comments showed the following split in sentiment. A majority of the comments are neutral while the positive and negative comments are distributed relatively evenly skewing towards the positive side. There are fewer upvotes on average for the very positive comments while the highest average upvotes are seen for negative comments. 
 
   Twitter sees about 60% of the comments leaning neutral and it has 50% more very positive comments compared to very negative comments. Once again, the negative comments have the highest engagement at 185 likes on average versus just 13 likes on average for the very positive comments. 
@@ -47,7 +49,10 @@ Install the necessary packages with pip install -r requirements.txt. Run `code/m
   Overall, the prevalence of neutral comments is a little surprising because we normally see different sections of the population use these social media platforms. Our general experience often sees more opinionated individuals online and we expected a greater bias away from neutral. 
 
 	Comparing both the sites we can see that .. 
-  
+
+_What does frequently come up?_ 
+
+
 <h3> Limitations and Future Considerations </h3>
   Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, acronyms, and even emojis. Vader's rating system uses a dictionary-based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
 
