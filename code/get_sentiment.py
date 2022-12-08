@@ -7,6 +7,7 @@ nltk.download(["vader_lexicon"])
 sia = SentimentIntensityAnalyzer()
 
 def get_site_sentiment(site):
+    """ This pulls scraped data from Reddit or Twitter and then uses VADER to analyze sentiments. The outputs are used to compare both sites and the sentiment analysis is directed uploaded to a SQL Database on GCP."""
     if site == "Reddit":
         """Querying reddit comments from SQL"""
         query = """
@@ -69,8 +70,6 @@ def get_site_sentiment(site):
     site_results.index.name=None
     site_results = site_results.astype({"Upvotes Avg": int})
     test1 = site_results[["Sentiment Count", "Sentiment Pct", "Upvotes Pct"]]
-    print(test1)
-    #site_results.to_sql('site_results', con=engine, if_exists='replace',index=False)
     
     if site=="Reddit":
         site_results.to_sql('reddit_site-results', con=engine, if_exists='replace',index=False)
@@ -83,7 +82,7 @@ def get_site_sentiment(site):
     post_sentiment.columns =["Post ID", rtitle]
 
     if site=="Reddit":
-        #comments.to_sql('temp_red_comm_sentiment', con=engine, if_exists='replace',index=False)
+        comments.to_sql('temp_red_comm_sentiment', con=engine, if_exists='replace',index=False)
 
         reddit_sentiment_sql = """
             UPDATE reddit_comments AS f
@@ -91,11 +90,11 @@ def get_site_sentiment(site):
             FROM temp_red_comm_sentiment AS t
             WHERE t.id = f.id
             """
-        #with engine.connect() as connection:
-            #connection.exec_driver_sql(reddit_sentiment_sql)
+        with engine.connect() as connection:
+            connection.exec_driver_sql(reddit_sentiment_sql)
 
     if site=="Twitter":
-        #comments.to_sql('temp_twit_comm_sentiment', con=engine, if_exists='replace',index=False)
+        comments.to_sql('temp_twit_comm_sentiment', con=engine, if_exists='replace',index=False)
 
         twitter_sentiment_sql = """
             UPDATE twitter_comments AS f
@@ -103,12 +102,13 @@ def get_site_sentiment(site):
             FROM temp_twit_comm_sentiment AS t
             WHERE t.id = f.id
             """
-        #with engine.connect() as connection:
-            #connection.exec_driver_sql(twitter_sentiment_sql)
+        with engine.connect() as connection:
+            connection.exec_driver_sql(twitter_sentiment_sql)
 
     return site_results, post_sentiment
 
 def get_sentiment():
+    """Calls function to analyze Reddit and Twitter and then compares outputs."""
     reddit_results, reddit_post_results = get_site_sentiment("Reddit")
     twitter_results, twitter_post_results = get_site_sentiment("Twitter")
 
