@@ -51,10 +51,12 @@ _How are people engaging with posts?_
 	Comparing both the sites we can see that .. 
 
 _What does frequently come up?_ 
+	ccc
 
-
-<h3> Limitations and Future Considerations </h3>
-  Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, acronyms, and even emojis. Vader's rating system uses a dictionary-based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
+<h3> Limitations and room for future research </h3>
+  Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. 
+	
+  Software like Vader or spaCy can estimate sentiments and analyze entities in text but have limited power when it comes to language used online which includes slang, acronyms, and even emojis. Vader's rating system uses a dictionary-based approach for assigning positive, neutral, or negative sentiment scores. Consequently, a lot of comments averaged out to a neutral rating even though the overall sentiment might lean one way or the other. 
 
   We did not analyze the overall sentiment of the news articles themselves and could not identify if they had a political leaning. Accordingly, the sentiment analysis lacks a political viewpoint in seeing if the sites are biased towards one political ideology or another. 
 
