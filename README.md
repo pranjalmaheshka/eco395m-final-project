@@ -52,7 +52,14 @@ _How are people engaging with posts?_
   Comparing both the sites we can see that about 10% of the times there is significant difference in overall sentiment regarding a post (<0.20 points and the scaled score is on a [-1,1] scale). 
 
 _What does frequently come up?_ 
-	Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second  
+																	       
+	Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second on Reddit. Interestingly, Donald Trump comes up 87 times, and Jesus follows him with 84 mentions. Twitter data is not as clean as Reddit but we can see Donald Trump coming in second after Biden. 
+
+Reddit clearly has more mentions of Republican-affiliated individuals when compared to Twitter. John Fetterman was the only Democrat that received mentions on both Reddit and Twitter. But Obama has the third-highest mentions of all individuals on Reddit.
+
+When we look at NORP for the Reddit comments and tweets, Republicans were recognised 2057 times on Reddit. On the other hand, Democrats only received 1224 counts. On Twitter, Republicans get 183 counts. 161 Democrats were recognised. 
+
+When we simply look at the Twitter users, we find 127—the largest group in all the user data—can be identified as Democrats. There are only 33 Republicans in comparison.
 
 <h3> Limitations and Future Considerations </h3>
   Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. 
