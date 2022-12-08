@@ -6,3 +6,7 @@ SQLAlchemy==1.4.34
 psycopg2-binary==2.9.3
 nltk
 snscrape
+setuptools wheel
+spacy
+download en_core_web_sm
+wordcloud

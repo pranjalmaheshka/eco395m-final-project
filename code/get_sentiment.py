@@ -14,7 +14,7 @@ def get_site_sentiment(site):
     analyze sentiments. The outputs are used to compare both sites and the
     sentiment analysis is directed uploaded to a SQL Database on GCP.
     """
-    
+
     if site == "Reddit":
         """Querying reddit comments from SQL"""
         query = """
