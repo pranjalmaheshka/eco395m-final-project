@@ -49,7 +49,7 @@ _How are people engaging with posts?_
   
   Overall, the prevalence of neutral comments is a little surprising because we normally see different sections of the population use these social media platforms. Our general experience often sees more opinionated individuals online and we expected a greater bias away from neutral. 
 
-	Comparing both the sites we can see that about 10% of the times there is significant difference in overall sentiment regarding a post (<0.20 points and the scaled score is on a [-1,1] scale). 
+  Comparing both the sites we can see that about 10% of the times there is significant difference in overall sentiment regarding a post (<0.20 points and the scaled score is on a [-1,1] scale). 
 
 _What does frequently come up?_ 
 	Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second  
