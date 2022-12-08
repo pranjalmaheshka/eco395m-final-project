@@ -16,7 +16,7 @@
  <h3> Methodology </h3> 
    We scraped Reddit and Twitter using APIs, added the post/comment information to a SQL database on Google Cloud Platform (GCP), and used SQL to query and analyse the data using Natural Language Processing (NLP) toolkits. The SQL databases were uploaded, and the data analysis outputs were shown using Streamlit. 
   
-  1. _Scraping Reddit:_ We started by scraping the top 50 posts on the r/politics subreddit over the last month (November 2022), and the associated top comments for each of the posts. The data scraped included the main post and its score (upvotes), the url to the news article being discussed, the number of comments, and the top comments and their scores (upvotes). The output is pushed directly into a database. A sample of the output is saved as a csv in the /artifacts/ folder. 
+  1. _Scraping Reddit:_ We started by scraping the top 50 posts on the r/politics subreddit over the last month (November 2022), and the associated top comments for each of the posts. In total, we got 24,412 comments. The data scraped included the main post and its score (upvotes), the url to the news article being discussed, the number of comments, and the top comments and their scores (upvotes). The output is pushed directly into a database. A sample of the output is saved as a csv in the /artifacts/ folder. 
   
   2. _Scraping Twitter:_ We used the headlines and url for the news articles from Reddit to search related posts on Twitter. We used snscrape to scrape tweets and their replies along with the number of likes and retweets for both to gauge the level of engagement. 
   
