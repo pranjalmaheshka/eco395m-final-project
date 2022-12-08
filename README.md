@@ -42,6 +42,7 @@ Install the necessary packages with pip install -r requirements.txt. Run `code/m
 <h3> What we find </h3> 
 
 _How are people engaging with posts?_ 
+	
   A sentiment analysis of Reddit comments showed the following split in sentiment. A majority of the comments are neutral while the positive and negative comments are distributed relatively evenly skewing towards the positive side. There are fewer upvotes on average for the very positive comments while the highest average upvotes are seen for negative comments. 
 
   Twitter sees about 60% of the comments leaning neutral and it has 50% more very positive comments compared to very negative comments. Once again, the negative comments have the highest engagement at 185 likes on average versus just 13 likes on average for the very positive comments. 
@@ -51,7 +52,7 @@ _How are people engaging with posts?_
 	Comparing both the sites we can see that .. 
 
 _What does frequently come up?_ 
-	ccc
+	Biden is the most frequently mentioned person across Reddit and Twitter. Lauren Boebert is a close second  
 
 <h3> Limitations and room for future research </h3>
   Analyzing language has many inherent limitations given the how contextual conversations can be. Certain phrases and sentences may differ entirely in meaning from setting to the next. Discussions on social media can be hard to analyze even manually given tonal differences, sarcasm, and sometimes just grammatically incorrect or incoherent comments. 
