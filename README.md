@@ -9,7 +9,7 @@
  This project analyzes bias and polarity in political discussions on Reddit and Twitter. The goal is to identify if there discussions on these websites lean in one direction or the other in terms of the sentiment and language used. For example, does Reddit usually more negative comments than Twitter for the same political conversation? Is there a prevalence for certain political viewpoints on either website?
   
  <h3> Methodology </h3> 
-   We scraped Reddit and Twitter using APIs, added the post/comment information to a database on Google Cloud Platform (GCP), and used SQL to query and analyse the data using Natural Language Processing (NLP) toolkits.
+   We scraped Reddit and Twitter using APIs, added the post/comment information to a database on Google Cloud Platform (GCP), and used SQL to query and analyse the data using Natural Language Processing (NLP) toolkits. The SQL databases were uploaded, and the data analysis outputs were shown using Streamlit. 
   
   1.Scraping Reddit: We started by scraping the top 50 posts on the r/politics subreddit over the last month (November 2022), and the associated top comments for each of the posts. The data scraped included the main post and its score (upvotes), the url to the news article being discussed, the number of comments, and the top comments and their scores (upvotes). The output is pushed directly into a database. A sample of the output is saved as a csv in the /artifacts/ folder. 
   
@@ -30,7 +30,7 @@
   
   
 <h3> Results </h3> 
-  A sentiment analysis of Reddit comments showed the following split in sentiment. A majority of the comments are neutral while the positive and negative comments are equally distributed with only a quarter of the total comments receiving a rating of 1 (Very Negative) or 5 (Very Positive). 
+  A sentiment analysis of Reddit comments showed the following split in sentiment. A majority of the comments are neutral while the positive and negative comments are  distributed relatively evenly. 
   
   This is a little surprising because we normally see different sections of the population use these social media platforms. We expected some bias away from neutral overall given the prevalence of negative information and negative comments online. Looking at the po;ularity of comments itself we see that ...
   
