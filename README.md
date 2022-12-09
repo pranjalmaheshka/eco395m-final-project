@@ -6,7 +6,7 @@
 
  <h3> Introduction </h3> 
  
- This project analyzes bias and polarity in political discussions on Reddit and Twitter. The goal is to identify if there discussions on these websites lean in one direction or the other in terms of the sentiment and language used. For example, does Reddit usually more negative comments than Twitter for the same political conversation? Is there a prevalence for certain political viewpoints on either website?
+ This project analyzes bias and polarity in political discussions on Reddit and Twitter. The goal is to identify if there discussions on these websites lean in one direction or the other in terms of the sentiment and language used. For example, does Reddit usually have more negative comments than Twitter for the same political conversation? Is there a prevalence for certain political viewpoints on either website?
  
  
  <p align="center"> 
