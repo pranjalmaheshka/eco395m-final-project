@@ -127,7 +127,7 @@ def rank_comparison():
         left join cte a on b.title=a.title order by r_ranking;
     """
     df = pd.read_sql_query(query, engine)
-    df_output = pd.DataFrame({
+    df = pd.DataFrame({
     "Reddit Ranking": df["r_ranking"].tolist(),
     "Twitter Ranking": df["t_ranking"].tolist(),
     "Reddit Likes": df["r_likes"].tolist(),
@@ -135,7 +135,7 @@ def rank_comparison():
     "x_line": range(1, 51),
     "y_line": range(1, 51),})
 
-    chart = alt.Chart(df_output).mark_point().encode(
+    chart = alt.Chart(df).mark_point().encode(
     x="Reddit Ranking",
     y="Twitter Ranking",
     color = alt.Color("Twitter Likes:N", legend=None),
