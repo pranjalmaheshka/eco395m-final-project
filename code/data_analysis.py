@@ -17,7 +17,6 @@ def top_posts():
     df = df.style.set_properties(**{'text-align': 'left'})
     return df
 
-
 def media_bias_rating():
     '''Count of Media Bias rating scores of Top 50 'Politics' posts'''
     query = """
@@ -51,7 +50,6 @@ def media_bias_rating():
             y = "Count of Articles",).properties(width=1000, height=400)
     return bar_chart
 
-
 def post_query(num):
     '''Get article information by user inputted rank value'''
     query = """
@@ -64,10 +62,8 @@ def post_query(num):
     url = df.loc[num-1, "url"]
     upvotes = str(int(df.loc[num-1, "post_score"]))
     comments = str(int(df.loc[num-1, "num_comments"]))
-
     output = [num, title, date, url, upvotes, comments]
     return output
-
 
 def reddit_top_comments(num):
     '''Get top 5 reddit comments for user inputted rank value'''
@@ -94,7 +90,6 @@ def reddit_top_comments(num):
 
     return [[text_1, text_2, text_3, text_4, text_5], [like_1, like_2, like_3, like_4, like_5]]
 
-
 def twitter_top_comments(num):
     '''Get top 5 Twitter Tweets based on user inputted rank value'''
     twitter_top_five_comments = """
@@ -120,7 +115,6 @@ def twitter_top_comments(num):
 
     return [[text_1, text_2, text_3, text_4, text_5], [like_1, like_2, like_3, like_4, like_5]]
 
-
 def rank_comparison():
     '''Get Reddit and Twitter article rankings of the Top 50 'Politics' posts based on upvotes and likes, respectively'''
     query = """
@@ -133,7 +127,7 @@ def rank_comparison():
         left join cte a on b.title=a.title order by r_ranking;
     """
     df = pd.read_sql_query(query, engine)
-    df = pd.DataFrame({
+    df_output = pd.DataFrame({
     "Reddit Ranking": df["r_ranking"].tolist(),
     "Twitter Ranking": df["t_ranking"].tolist(),
     "Reddit Likes": df["r_likes"].tolist(),
@@ -141,7 +135,7 @@ def rank_comparison():
     "x_line": range(1, 51),
     "y_line": range(1, 51),})
 
-    chart = alt.Chart(df).mark_point().encode(
+    chart = alt.Chart(df_output).mark_point().encode(
     x="Reddit Ranking",
     y="Twitter Ranking",
     color = alt.Color("Twitter Likes:N", legend=None),
@@ -220,7 +214,6 @@ def entity_chart(df):
     chart = alt.Chart(df_chart).mark_bar().encode(
     x = alt.X("x", axis=alt.Axis(title="Top 20 Words")),
     y = alt.Y("y", axis=alt.Axis(title=" Count"),)).properties(width=600, height=400)
-
     return chart
 
 def reddit_people():
@@ -266,6 +259,7 @@ def twitter_org():
     return entity_chart(pd.read_sql_query(query, engine))
 
 def reddit_sentiment():
+    '''Reddit Sentiment analysis chart output'''
     query = """
         select * from  "reddit_site-results";
     """
@@ -281,6 +275,7 @@ def reddit_sentiment():
     return chart
 
 def twitter_sentiment():
+    '''Twitter Sentiment analysis chart output'''
     query = """
         select * from  "twitter_site-results";
     """
@@ -295,8 +290,8 @@ def twitter_sentiment():
     y = alt.Y('y', axis=alt.Axis(title="Sentiment Count"),)).properties(width=600, height=400)
     return chart
 
-
 def sentiment_analysis():
+    '''Sentiment analysis Table output'''
     query1 = """
         select "Sentiment Count", "Sentiment Pct", "Upvotes Avg" from  "reddit_site-results";
     """
